@@ -1,0 +1,39 @@
+\section{Riconoscimento degli architectural smell su progetti reali}
+    Questo capitolo presenta nel dettaglio tutte le attività svolte riguardanti l'esecuzione e la validazione degli algoritmi sviluppati su diversi progetti open-source. 
+    Dopo una descrizione dei progetti, saranno analizzate nel dettaglio l'esecuzione degli algoritmi, le diverse attività di validazione svolte e i risultati ottenuti.  
+    %Saranno inoltre approfondite anche tutte le operazioni per la validazione dei risultati, con descrizione delle differenti attività svolte e considerazioni approfondite sugli smell e sulle cause che hanno portato alla detection di falsi positivi. 
+    Sarà inoltre effettuato un confronto sulle differenze della \textit{detection} di Arcan rispetto a quella del \textit{tool} Designite \cite{Designite}.
+    Un'ultima sezione esporrà poi i differenti problemi affrontati durante lo svolgimento di queste attività.
+    Prima della presentazione delle tematiche descritte in precedenza, sarà effettuata una breve digressione riguardo le attività di \textit{testing} svolte per la verifica degli algoritmi durante il loro sviluppo %e la correttezza dei risultati prodotti con input ben definiti. 
+
+    \paragraph{Approccio Test Driven Development}
+        Durante lo sviluppo degli algoritmi sono stati effettuati i loro test seguendo l'approccio \textit{Test Driven Development (TDD)} \cite{beck2003testdrivendev}. Questa strategia prevede la scrittura dei test anticipata rispetto all'implementazione degli algoritmi, in modo che lo sviluppo dell'applicativo sia orientato alla soddisfazione degli stessi. Al fine di applicare il \textit{TDD} è stato utilizzato il framework JUnit \cite{JunitWebsite}.
+            % Inizialmente la prima fase di testing della capacità e correttezza degli algoritmi è stata durante lo sviluppo degli stessi, mediante l'utilizzo del framework JUnit \cite{JunitWebsite} per la creazione di test unitari. E' stato scelto infatti un approccio di Test Driven Development (TDD) \cite{beck2003testdrivendev}, che prevede la scrittura dei test prima dell'implementazione degli algoritmi in modo che lo sviluppo dell'applicativo abbia come obiettivo il passaggio di tutti i test unitari. 
+        
+        L'implementazione dei test unitari è stata fondamentale per la definizione degli obiettivi da raggiungere da parte degli algoritmi di \textit{detection}. Attraverso queste verifiche è stato possibile effettuare due tipologie di analisi differenti:
+        \begin{itemize}
+            \item \textit{Analisi di strutture sintetiche}, cioè grafi generati manualmente all'interno del codice dei test, utilizzati al fine di valutare il comportamento dell'algoritmo considerate diverse situazioni in termini di nodi e relazioni tra essi. In particolare attraverso le strutture sintetiche sono stati analizzati tutti i casi limite riguardanti le strutture del grafo, come ad esempio il numero di nodi coinvolti oppure le loro tipologie. L'obiettivo della scrittura di questi test è stato quindi il test su piccola scala, testando la capacità dell'algoritmo a riconoscere gli \textit{smell} in differenti scenari con un numero basso di nodi e archi e strutture ben definite.
+            
+            \item \textit{Analisi di piccoli progetti open source}, sono stati direttamente analizzati anche due progetti Java \textit{open source} di piccole dimensioni, Junit 4.13 \cite{JunitWebsite} e Jsoniter \cite{JsoniterWebsite}. Lo scopo dell'analisi di questi due progetti è stata la verifica, direttamente dal grafo generato da Arcan tramite la piattaforma Neo4J \cite{Neo4JWebsite}, che il numero degli \textit{smell} trovati attraverso \textit{query} Cypher \cite{Cypher} effettuate sul grafo fosse equivalente a quello trovato dagli algoritmi di \textit{detection}. Questi test quindi avevano come obiettivo la verifica che le strutture sintetiche riconosciute dall'algoritmo fossero individuate anche all'interno di progetti complessi e organizzati.
+        \end{itemize}
+
+
+    \subsection{Descrizione progetti utilizzati}
+        \input{Tesi/Sezione4-Progetti/subfiles/4.1-descrizione-progetti}
+
+
+    \subsection{Risultati della detection}
+        \input{Tesi/Sezione4-Progetti/subfiles/4.2-risultati-detection}
+        
+    \subsection{Validazione dei risultati}
+        \input{Tesi/Sezione4-Progetti/subfiles/4.4-validation}
+    \newpage
+    \subsection{Confronto dei risultati ottenuti con il tool Designite}
+        \input{Tesi/Sezione4-Progetti/subfiles/4.3-confronto-designite}
+    
+    \subsection{Problemi riscontrati}
+        \input{Tesi/Sezione4-Progetti/subfiles/4.5-problemi-riscontrati}
+        
+    \subsection{Osservazioni finali}
+        \input{Tesi/Sezione4-Progetti/subfiles/4.6-osservazioni}
+    

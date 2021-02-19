@@ -1,0 +1,74 @@
+
+\subsubsection{Unnecessary Abstraction}
+    Attraverso il \textit{tool} Designite è possibile anche la \textit{detection} dello \textit{smell} \textit{Unnecessary Abstraction}, sebbene con la limitazione di identificare solamente il caso \textit{constant placeholder}, a differenza di Arcan che individua anche \textit{procedural class} e le \textit{over engineered}. Questa diversità tra le capacità dei due \textit{smell} crea un grande divario anche per quanto riguarda il numero di istanze, con Arcan che ne ha individuate 2051 in più.
+    
+    Il confronto delle strategie di identificazione sarà effettuato analizzando solamente il caso \textit{constant placeholder} mentre l'analisi dei risultati verrà condotta esaminando anche tutti i casi presenti. Nello specifico, saranno inizialmente considerati tutti i casi di \textit{Unnecessary Abstraction}, per poi proseguire con l'analisi solamente di \textit{constant placeholder}.
+    
+    
+    \paragraph{Strategie di identificazione}
+        Per la ricerca delle \textit{abstraction} \textit{constant placeholder} gli sviluppatori di Designite hanno effettuato una ricerca di tutte le classi senza metodi e con un numero di attributi minore o uguale a una determinata soglia, che al momento della stesura di questo elaborato assumeva il valore 5. 
+        Segue una rappresentazione in pseudocodice dell'algoritmo di \textit{detection}:
+        \defaultvspace
+        \begin{algorithmic}
+            \Function{designite-una-detector}{ }
+                \State{def SOGLIA = 5} 
+                \If{L'elemento analizzato ha un numero di attributi $<=$ SOGLIA}
+                    \If{L'elemento analizzato non ha metodi}
+                        \State{\textbf{return} l'elemento è una Unnecessary Abstraction}
+                    \EndIf
+                \EndIf
+            \EndFunction
+        \end{algorithmic}
+        \defaultvspace \\
+        %Gli algoritmi di ricerca implementati dai due tool presentano alcune differenze.
+        %Oltre alla differenza degli algoritmi di ricerca tra le casistiche considerate, di cui è stato già discusso in precedenza, la sola \textit{detection} del caso \textit{constant placeholder} presenta ulteriori diversità. 
+        \\
+        Mentre Arcan considera come \textit{constant placeholder} le \textit{abstraction} che presentano solamente attributi costanti a prescindere dal loro numero, Designite introduce una soglia minima di attributi che deve definire una classe per essere considerata una \textit{constant placeholder}, poiché gli sviluppatori del tool devono aver ritenuto che classi con pochi costante non possano essere considerati \textit{placeholder}. Il problema delle classi costanti con pochi attributi è stato riscontrato in Arcan, dove è emerso che la causa principale della presenza di falsi positivi nel caso \textit{constant placeholder} fosse proprio la loro presenza nel sistema.
+        
+        Un ulteriore differenza tra i due algoritmi si può ricercare nel controllo degli attributi poiché, mentre Arcan verifica che gli siano costanti e con un valore già assegnato, Designite si limita solamente a verificare che la \textit{abstraction} considerata non contenga altro oltre ad essi, effettuando così la \textit{detection} di classi che non hanno tutti valori costanti.
+         
+         Infine la struttura di Arcan ha reso necessario anche il filtraggio delle classi rappresentanti errori, mentre per Designite non è stato necessario poiché probabilmente l'introduzione della soglia esclude queste classi che solitamente contengono massimo due attributi costanti.
+    
+    \paragraph{Analisi risultati}
+        Essendo condotta l'analisi nei due modi differenti, nella tabella riepilogativa delle istanze è stata inserita una nuova colonna, denominata \textit{N\textsuperscript{o} constant placeholder}, che indica il numero di istanze di questa tipologia trovate da Arcan nei vari progetti.
+        
+        Dai dati presentati nella tabella 13 emergono i diversi approcci adottati dai due tool. La differenza di 2051 istanze in favore di Arcan è in soprattutto conseguenza della ricerca delle \textit{procedural class} che ha un forte impatto sul numero totale di \textit{smell} trovati. \\
+        
+        \defaultvspace
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|c|c|c|c|}
+                \hline
+                \textbf{Progetto} & \textbf{N\textsuperscript{o} smell} & \textbf{N\textsuperscript{o} constant} & \textbf{N\textsuperscript{o} smell} \\
+                & \textbf{Arcan} & \textbf{placeholder} & \textbf{designite}\\
+                \hline
+                Accumulo & 1113 & 24 & 77 \\
+                Beam & 13 & 24 & 2\\
+                Bookkeeper & 96 & 15 & 74\\
+                Cassandra & 639 & 4 & 33\\
+                Druid & 52 & 5 & 7\\
+                Flink & 47 & 25 & 28\\
+                Geode & 166 & 19 & 34\\
+                Kafka & 119 & 19 & 51\\
+                Skywalking & 208 & 36 & 128\\
+                Zookeeper & 38 & 7 & 6\\
+                \hline
+                Totale & 2491 & 178 & 440 \\
+                \hline
+            \end{tabular}
+            \caption{Confronto istanze Unnecessary Abstraction}
+            \label{tab:caption}
+        \end{table}
+        Se anche per Arcan non venissero considerati i due casi \textit{over engineered} e \textit{procedural class}, si può notare come Designite sia in grado di trovare un numero maggiore di istanze. 
+            %Questa differenza può essere riflesso del fatto che la ricerca di Arcan effettua controlli più approfonditi sugli attributi.
+            %Questa differenza può essere un riflesso del fatto che, come analizzato nel paragrafo precedente, nella ricerca Designite non effettua il controllo che tutti gli attributi della classe siano valori già assegnati e costanti, e per questo motivo un gran numero di classi escluse da Arcan sono considerate come smell invece da Designite. Anche per questo smell è stata effettuata un'analisi delle classi trovate da Designite, al fine di enfatizzare meglio le differenze. Questa analisi ha confermato quello detto in precedenza, e cioè che non viene effettuato nessun controllo sugli attributi finale. Inoltre ha evidenziato un'altra differenza fondamentale tra i due tool: mentre Arcan controlla solamente gli attributi definiti dalla classe sotto esame, Designite considera anche tutti quelli ereditati da eventuali supertipi. Questo causa quindi la presenza di molte classi vuote che, essendo sottotipi di \textit{unnecessary smell}, sono anch'esse affette dallo smell; in Arcan questo non succederebbe. Inoltre non vengono considerati i valori di default
+        %Alternative
+        Un'analisi dettagliata delle classi individuate da quest'ultimo ha permesso di evidenziare le possibili cause principali che hanno portato a questa discrepanza:
+            %Un'analisi delle classi trovate da Designite ha permesso di evedenziare due delle cause che hanno portato a questa differenza tra i due tool:
+        \begin{itemize}
+            \item Il \textit{tool} Designite non effettua il controllo che tutti gli attributi della classe siano costanti e con valori di default assegnati e l'analisi effettuata ha confermato questa differenza, in quanto tra le istanze erano presenti numerose classi che presentavano attributi non costanti.
+            
+            \item C'è una differenza per quanto riguarda gli attributi considerati all'interno delle classi, poiché mentre Arcan effettua l'analisi solamente degli attributi della \textit{abstraction} presa sotto analisi, Designite considera anche tutti quelli ereditati da eventuali supertipi. Questa diversità porta quindi la \textit{detection} da parte di Designite di classi vuote che sono sottotipi di \textit{costant placeholder}, che non verrebbero invece individuate da Arcan.
+        \end{itemize}
+        
+        

@@ -1,0 +1,23 @@
+\begin{algorithmic}
+\Function{dfs-unutilized}{G}
+    \State{smellClasses = getNodesList()} \Comment{Prendo la lista di tutti i nodi}
+    \For{vertice v in G.V}
+        \If{not v.visited}
+            \State{\Call{dfs-visit-unutilized}{G, v}}
+        \EndIf
+    \EndFor
+\EndFunction
+\\
+\Function{dfs-visit-unutilized}{G, v}
+    \State{v.visited = true}
+    \For{u in Adj(v)}
+        %Devo controllare che sia una classe?
+        %\If{u is Class or u is Interface}
+            \State{smellClasses.remove(u)}
+        %\EndIf
+        \If{not u.visited}
+            \State{\Call{dfs-visit-subclasses}{G, u}}
+        \EndIf
+    \EndFor
+\EndFunction \Comment{Posso migliorare facendo il controllo solamente se ho le coppie classe-classe oppure interfaccia-classe, in modo da vedere solamente se count(Adj(u)) == 0. Inoltre se quel nodo è un package posso passare oltre (forse questo posso farlo solamente col grafo?)}
+\end{algorithmic}

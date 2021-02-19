@@ -1,0 +1,25 @@
+\section{Riconoscimento di nuovi architectural smell con Arcan}
+
+%Introduzione
+Obiettivo di questo capitolo è l'introduzione e approfondimento dei tre nuovi \textit{architectural smell (AS)} introdotti. Le sezioni successive sono orientate alla descrizione dei tre nuovi \textit{smell}, rappresentati secondo una struttura ben definita:
+\begin{enumerate}
+    \item Introduzione con descrizione delle cause più comuni che portano al suo inserimento nel sistema e piccola descrizione del nodo introdotto nel grafo
+    \item Impatto sulla qualità del codice e possibili strategie di \textit{refactoring}
+    \item Strategie di identificazione ideate
+    \item Algoritmo di \textit{detection} in pseudocodice
+\end{enumerate}
+Per favorire la comprensione degli \textit{smell} è necessaria l'introduzione del concetto di \textit{abstraction}, riferito a classi (concrete o astratte) e interfacce che fanno parte del progetto. Questo termine deriva dal \textit{Abstraction Principle} \cite{booch2008object}, che sostiene la semplificazione delle entità attraverso l'eliminazione di dettagli non necessari e la generalizzazione delle caratteristiche condivise tra esse. Un altro principio importante per la comprensione del lavoro svolto è il \textit{Hierarchy Principle} \cite{booch2008object}, che supporta la creazione di un'organizzazione gerarchica di \textit{abstraction} attraverso l'utilizzo di tecniche come classificazione, generalizzazione e sostituibilità.
+
+Obiettivo dell'estensione di Arcan è stato fornire al \textit{tool} la capacità di riconoscere tre nuovi \textit{architectural smells}: \textit{Subclasses Do Not Redefine Methods}, \textit{Unutilizied Abstraction}, e \textit{Unnecessary Abstraction}. 
+%In dettaglio, i nuovi smell introdotti sono:
+Tutti gli \textit{smell} introdotti violano i principi presentati in precedenza. In dettaglio, lo smell \textit{Subclasses Do Not Redefine Methods} è responsabile della violazione del \textit{Hierarchy Principle} mentre \textit{Unutilizied Abstraction} e \textit{Unnecessary Abstraction} non rispettano il \textit{Abstraction Principle}.
+
+
+%\input{Tesi/Sezione3-RiconoscimentoSmell/subfiles/3.1_Arcan_e_modifiche}
+
+\input{Tesi/Sezione3-RiconoscimentoSmell/subfiles/3.2_SR_smell}
+
+\input{Tesi/Sezione3-RiconoscimentoSmell/subfiles/3.3_UUA_smell}
+
+\input{Tesi/Sezione3-RiconoscimentoSmell/subfiles/3.4_UNA_smell}
+

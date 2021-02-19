@@ -1,0 +1,41 @@
+\section{Introduzione}
+    %Introduzione architetture software
+    Per decenni progettisti e sviluppatori hanno realizzato sistemi prestando maggiore attenzione ai requisiti tecnici piuttosto che all'architettura software, ma con il trascorrere degli anni la tendenza è cambiata a tal punto che oggi viene considerata un elemento fondamentale nel processo di progettazione e sviluppo di un sistema.
+    
+    Con il termine architettura si indica la struttura elaborata dai progettisti per il sistema, che include la divisione del sistema in componenti differenti, le relazioni che intercorrono tra essi e la loro disposizione e proprietà.
+    La struttura di un sistema supporta il suo intero ciclo di vita e la sua qualità impatta in modo significativo su diverse proprietà quali facilità di comprensione e di sviluppo, semplicità della manutenzione, integrazione di nuove funzioni, implementazione di politiche di sicurezza e facilità nella definizione di test.
+    Un sistema che presenta un'architettura progettata male è soggetto a diversi problemi, che comportano un grande spreco di risorse da parte del team di sviluppo, presenza di numerosi errori e ad un lento degrado della qualità del software \cite{Arcan2017}. 
+    
+    % Introduzione agli AS
+    Una categoria di questi problemi è rappresentata dagli \textit{architecture smells}, violazioni di \textit{design principles} e soluzioni che impattano negativamente sulla qualità del software e sulle risorse utilizzate per la sua manutenzione ed evoluzione \cite{AzadiFontana} \cite{Garcia2009}. La presenza di \textit{smell} è dannosa per il progetto, in quanto influenza negativamente diverse caratteristiche qualitative dell'architettura e introduce \textit{technical debt} \cite{SURYANARAYANA201521}, il debito accumulato durante lo sviluppo e manutenzione di un software quando vengono prese decisioni riguardanti il design errate oppure non ottimali. Se queste situazioni introdotte vengono corrette tempestivamente il debito non subisce variazioni, altrimenti continua ad incrementare e con esso anche le difficoltà nella modifica e manutenzione dei componenti sistema.
+    %Problemi e benefici portati dalla loro detection
+    La ricerca di \textit{smell} e la loro rimozione attraverso strategie collaudate è quindi un'attività fondamentale per la manutenzione di un progetto, poiché permette la diminuzione del \textit{technical debt} e il mantenimento di un'elevata qualità del software, attraverso un miglioramento di diverse qualità chiave quali comprensione del design, facilità nell'estensione, riusabilità e affidabilità.
+    
+    %Introduco gli abstraction e hierarchy smell
+   Suryanarayana \cite{SURYANARAYANA201521}, ha proposto una classificazione degli \textit{architecture smell} in quattro categorie differenti (\textit{abstraction}, \textit{encapsulation}, \textit{modularization} e \textit{hierarchy}), derivate dalla violazione dei principi fondamentali del \textit{software design} introdotti da G. Booch nel suo \textit{object model} \cite{booch2008object}.
+    % Racconto brevemente i tre smell introdotti
+    %Focalizzeremo la nostra attenzione 
+    Le tipologie rilevanti per questo elaborato sono \textit{hierarchy smell}, in particolare lo \textit{smell} \textit{Subclasses Do Not Redefine Methods}, e \textit{abstraction smell}, alla quale appartengono \textit{Unutilizied Abstraction} e \textit{Unnecessary Abstraction}. La presenza di \textit{Subclasses Do Not Redefine Methods} ha un impatto fortemente negativo sul codice in quanto incide sulla facilità di modifica ed estensione del codice e sul riutilizzo delle entità, dal momento che non rende possibile la sostituzione del supertipo con i suoi sottotipi senza alterare l'esecuzione del sistema. 
+    Gli \textit{smell} relativi al principio di astrazione introducono invece nel design responsabilità non uniche e poco significative, che influenzano negativamente la facilità di comprensione del sistema e la sua affidabilità.
+        
+    %Lavoro svolto
+    I tre \textit{smell} introdotti sono stati analizzati al fine permettere la loro \textit{detection} attraverso Arcan \cite{Arcan2017} \cite{ESSeREwebsite}, un \textit{tool} sviluppato per effettuare analisi statiche di sistemi software che basa il suo funzionamento sui concetti di \textit{graph database technology} e \textit{graph computing}. 
+    Il \textit{tool} genera un grafo delle dipendenze per la rappresentazione del sistema analizzato, che viene successivamente esaminato tramite algoritmi di \textit{detection} per individuare gli \textit{smell} all'interno del progetto. 
+    Al fine di implementare il riconoscimento degli smell introdotti in precedenza da parte di Arcan, è stato necessaria l'implementazione dei tre nuovi algoritmi di \textit{detection}. Questi algoritmi hanno inoltre richiesto l'aggiunta di nuovi elementi al grafo delle dipendenze e modifiche agli algoritmi di \textit{parsing}.
+    %Per il riconoscimento di queste tre nuove tipologie di smell è stata necessaria l'introduzione, oltre che dei relativi algoritmi di ricerca, di nuovi elementi nel grafo delle dipendenze, con conseguente modifica degli algoritmi di \textit{parsing}.
+    
+        %Oltre alla scrittura di algoritmi di ricerca, è stata necessaria anche l'introduzione di nuovi elementi nel grafo delle dipendenze con conseguente modifica degli algoritmi di \textit{parsing}.
+        %La detection di questi tre nuovi smell ha reso necessario, oltre alla scrittura degli algoritmi di detection e delle classi necessarie per rappresentare i dati, anche alcune modifiche al grafo delle dipendenze. E' stato necessario introdurre gli algoritmi per il parsing delle funzioni implementate da una classe, informazione necessaria per il riconoscimento di degli smell Subclasses Do Not Redefine Methods e Unnecessary Abstraction. Inoltre ho dovuto sviluppare anche gli algoritmi e le strutture dati per recuperare tutti gli attributi definiti da una classe, necessario per la detection dello smell Unnecessary Abstraction.
+
+    %Descrizione tesi
+    Questo lavoro è stato organizzato come segue.
+    Nel capitolo 2 verranno discussi alcuni lavori correlati al tema del riconoscimento di \textit{smell}, con la presentazione anche di diversi \textit{tool} in grado di effettuare la loro \textit{detection}. 
+    Il capitolo 3 descrive nel dettaglio il \textit{tool} Arcan \cite{Arcan2017} e le modifiche effettuate al \textit{parsing} e alla struttura del grafo delle dipendenze necessarie per il riconoscimento dei nuovi \textit{smell}. Nel capitolo 4 viene effettuata la presentazione dettagliata degli \textit{smell} introdotti in questo elaborato e delle strategie ideate per il loro riconoscimento.
+    %Il capitolo 3 presenta invece gli \textit{architectural smells} introdotti in questo lavoro di estensione di Arcan e le loro regole di riconoscimento. 
+    Il capitolo 5 riguarda l'esecuzione degli algoritmi su progetti reali, la relativa analisi dei risultati ottenuti e i problemi riscontrati. Sarà presente inoltre un confronto fra Arcan e il \textit{tool} Designite \cite{Designite}.
+    L'ultimo capitolo conclude il lavoro svolto e suggerisce alcuni sviluppi futuri per il progetto.
+    
+
+    
+
+

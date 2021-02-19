@@ -1,0 +1,52 @@
+%\subsection{Tool per il riconoscimento di architectural smell}
+    % Devo fare un introduzione migliore ai tool per l'analisi architetturale e più in particolari agli AS
+\subsection{Tool per il riconoscimento di architectural smell}
+
+Sul mercato sono disponibili diversi \textit{tool} per effettuare analisi statica di sistemi software, in grado di analizzare differenti linguaggi di programmazione, effettuare il calcolo di numerose metriche e ricercare \textit{architecture smell} a diverse granularità.
+
+U. Azadi et al. \cite{AzadiFontana} hanno presentato un catalogo di nove \textit{tool} disponibili e non sul mercato, volti alla \textit{detection} di \textit{architectural smell}. Gli autori hanno posto molta enfasi sul confronto operativo dei vari \textit{tool}, analizzando in particolare le differenze tra le diverse regole di \textit{detection} e i differenti risultati ottenuti. 
+Verranno proposti di seguito diversi \textit{tool} per la \textit{detection} di \textit{architectural smell}, mettendo in risalto le loro capacità e la peculiarità del funzionamento e della ricerca di ognuno di essi, la maggior parte dei quali presenti nel lavoro di Azadi \cite{AzadiFontana}.
+
+%Designite
+%\paragraph{Designite} 
+    Designite \cite{Designite} è un \textit{tool} che permette la valutazione della qualità del software attraverso l'identificazione di un vasto range di \textit{smell} (ovvero \textit{code}, \textit{architectural} oppure \textit{design smell}), il calcolo di diverse metriche e l'identificazione del codice replicato nel progetto. %Questo tool fornisce inoltre la possibilità di monitorare il numero di smell in differenti versioni dello stesso software, per l'analisi dell'andamento del processo di sviluppo e manutenzione del sw stesso.\\
+    Designite effettua il \textit{parsing} del codice in modo da generare un \textit{Abstract Syntax Tree (AST)}, utilizzato poi per la creazione del meta-modello necessario al funzionamento del \textit{tool}. L'analisi di questo meta-modello permette poi di effettuare la \textit{detection} e calcolare le metriche.
+    %computazione di differenti metriche (utilizzate anche per la detection degli smell) oppure direttamente la detection degli smell, attraverso un'analisi approfondita del meta-modello stesso. 
+
+
+%AI Reviewer
+%\paragraph{AI Reviewer} 
+    AI Reviewer \cite{AIReviewer} è un \textit{tool} in grado di analizzare progetti C++ al fine di trovare, anche attraverso la ricerca di \textit{architectural smell}, violazioni dei principi \textit{S.O.L.I.D.} introdotti da Robert Martin \cite{martin2002agile} e calcolare diverse metriche a granularità differenti. Il funzionamento è basato sulla rappresentazione astratta e dettagliata del progetto derivata dal \textit{parsing} del codice sorgente attraverso un modello, analizzato da un ulteriore componente per svolgere i differenti calcoli.
+
+% Massey Architecture Explorer
+%\paragraph{Massey Architecture Explorer} 
+    Massey Architecture Explorer (MAE) \cite{MasseyArchitectureExplorer} è un applicazione \textit{browser-based} per visualizzare e analizzare architetture di progetti Java. MAE estrae un modello \textit{graph-based} dal \textit{bytecode} Java, analizzato poi da un algoritmo apposito per la \textit{detection} di \textit{architecture smell} e anti-pattern architetturali.
+    %che viene poi 'analizzato' da un algoritmo per la ricerca di antipattern architetturali relativi ai problemi di refactoring (?). 
+
+
+% Arcade
+%\paragraph{ARCADE} 
+    ARCADE \cite{Arcade7180083} è un software in grado di monitorare e analizzare le modifiche e il decadimento architetturale di un progetto attraverso le sue differenti versioni. 
+    ARCADE può recuperare l'architettura dal codice sorgente del progetto, per poi utilizzare le informazioni estratte per il calcolo di metriche (confrontando l'architettura estratta con quella di tutte le versioni precedenti e successive di quel software), per effettuare analisi statistiche sui dati ottenuti e ricercare diversi \textit{architectural smell}. \cite{AzadiFontana}. 
+
+
+% Stan (Dipendenze Cicliche)
+%\paragraph{STAN} 
+    STatic ANalizer for Java \cite{STAN} è un software per effettuare analisi strutturali di progetti Java analizzando il \textit{bytecode} del progetto. Con STAN è possibile visualizzare le dipendenze tra classi e package del sistema, calcolare metriche per la qualità del software con anche \textit{rating} e indicazioni sui valori ottenuti ed effettuare la detection dello smell \textit{Cyclic Dependency}.
+    
+
+% Sonargraph
+%\paragraph{Sonargraph}
+    Sonargraph \cite{sonargraph}\cite{SonargraphArticle} è un software che permette il monitoraggio e l'analisi di architettura software e metriche di un progetto, focalizzato sulla riduzione del \textit{technical debt}. Tramite un \textit{Domain Specific Language} (DSL) specializzato, gli sviluppatori possono definire le regole per la descrizione della loro architettura, controllate e validate in maniera automatica durante il processo di sviluppo software. Supporta diversi linguaggi di programmazione (Java, C#, C, C++, Python) ed è possibile inoltre la detection di due smell architetturali \cite{AzadiFontana}.
+    
+    
+% Hotspot Detector
+%\paragraph{Hotspot Detector} and detected by the combination of history and architecture in- formation
+    Hotspot Detector \cite{HotspotDetector} è un \textit{tool} per la detection automatica di cinque problemi architetturali, derivati dalla teoria di progettazione di Baldwin e Clark \cite{BaldwinClark_DesignRulesVolume1} e ricercati attraverso la combinazione di informazioni storiche e architetturali. Gli stessi sviluppatori del \textit{tool} hanno ribattezzato questi problemi come \textit{Hotspot Patterns}.
+
+
+% Structure101
+%\paragraph{Structure101}
+    Structure101 \cite{structure101} è un \textit{tool} che permette la visualizzazione dell'architettura del progetto in maniera modulare, gerarchica e organizzata e la \textit{detection} di due differenti \textit{architecture smell}, con simulazione e applicazione delle tecniche di \textit{refactoring}. È inoltre possibile la definizione regole di dipendenza, stratificazione e visibilità attraverso elementi strutturali.
+
+

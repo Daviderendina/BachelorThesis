@@ -1,0 +1,88 @@
+\documentclass[a4paper, 12pt]{article} %prima report era article
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,bindingoffset=0.2in,
+            left=1.3in,right=1.3in,top=1.6in,bottom=1.6in,%
+            footskip=.48in]{geometry}
+\usepackage[noend]{algpseudocode}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
+\usepackage{bibtopic}
+
+% Titoli più grandi
+\usepackage{sectsty}
+\sectionfont{\LARGE}
+\subsectionfont{\Large}
+\subsubsectionfont{\large}
+%\paragraphfont{\large}
+
+
+\begin{document}
+
+%Frontespizio
+\input{Tesi/frontespizio}
+
+\restoregeometry
+\renewcommand\footnoterule{} %rimuover separator footnotes
+\renewcommand*\contentsname{Indice} %cambio titolo indice
+\newcommand{\defaultvspace}{\vspace{0.5cm}}
+
+
+%Pagina bianca dopo la prima pagina
+\newpage
+
+%Indice
+\newgeometry{left=1.3in,right=1.3in,top=1.2in,bottom=1.6in, footskip=.48in}
+\begingroup
+    \linespread{0.63}
+    \tableofcontents
+\endgroup
+\restoregeometry
+
+\newpage \thispagestyle{plain} \mbox{}
+%Pagina bianca dopo l'indice ?
+
+% Inizio testo
+\newpage
+\input{Tesi/Sezione1-Introduzione/S1_introduzione}
+
+\newpage
+\input{Tesi/Sezione2-Related works/S2_related-works}
+
+\newpage
+\input{Tesi/Sezione2b-Arcan/S2b-Arcan}
+
+\newpage
+\input{Tesi/Sezione3-RiconoscimentoSmell/S3_riconoscimento-smell}
+
+\newpage
+\input{Tesi/Sezione4-Progetti/S4_riconoscimento-progetti-reali}
+
+\newpage
+\input{Tesi/Sezione5-SviluppiFuturi/S5_sviluppi_futuri}
+
+
+% Bibliografia
+\newpage
+\bibliographystyle{plain}
+
+\begin{btSect}{bibliography}
+\section*{Bibliografia}
+\btPrintAll
+\end{btSect}
+
+\begin{btSect}{sitography}
+\section*{Sitografia}
+\btPrintAll
+\end{btSect}
+
+\newpage \thispagestyle{plain} \mbox{}
+\newpage \thispagestyle{plain} \mbox{}
+\newpage \thispagestyle{plain} \mbox{}
+\input{ringraziamenti}
+
+
+
+\end{document}

@@ -1,0 +1,18 @@
+\begin{algorithmic}
+    \Function{Subclasses-does-not-redefine-methods-detector}{ }
+        \State{Prendo tutti i nodi che hanno almeno un arco in entrata del tipo}
+        \State{isChildOf, escludendo le interfacce e le enumerazioni}
+        \For{Ogni vertice trovato, che rappresenta il supertipo}
+            \State{Prendo la lista delle funzioni definite ed ereditate dalla unit,}
+            \State{includendo anche quelli definiti dalle interfacce implementate}
+            \If{La lista dei metodi considerata non è vuota}
+                \For{Ogni sottotipo con isChildOf in uscita verso il supertipo}
+                    \State{Prendo la lista di tutte le funzioni definite dal sottotipo}
+                    \If{L'intersezione tra le liste dei metodi è l'insieme vuoto}
+                        \State{Aggiungo il vertice alla lista degli smell}
+                    \EndIf
+                \EndFor
+             \EndIf
+        \EndFor
+    \EndFunction
+\end{algorithmic}

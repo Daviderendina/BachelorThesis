@@ -1,0 +1,57 @@
+\begin{algorithmic}
+    \Function{unnecessary-abstraction-detection}{G}
+        \State{Prendo la lista di tutti i vertici di tipo unit}
+        \For{Ogni vertice nella lista}
+            %Procedural
+            \If{\Call{is-procedural-class}{vertice}}
+                \State{Aggiungo il vertice alla lista degli smell}
+            \EndIf
+            %Costant
+            \If{\Call{is-constant-placeholder}{vertice}}
+                \State{Aggiungo il vertice alla lista degli smell}
+            \EndIf
+            %Over
+            \If{\Call{is-over-engineered}{vertice}}
+                \State{Aggiungo il vertice alla lista degli smell}
+            \EndIf
+        \EndFor
+    \EndFunction
+    \\
+    \Function{is-procedural-class}{vertice}
+        \If{Il vertice è una classe concreta o astratta}
+            \If{Il vertice non ha archi in ingresso containedIn}
+                \If{Il vertice non ha archi in uscita isChildOf}
+                    \If{Il vertice ha 1-2 archi in ingresso implementedBy}
+                        \State{\textbf{return} la classe è una Unnecessary Abstraction}
+                    \EndIf
+                \EndIf
+            \EndIf
+        \EndIf
+    \EndFunction
+    \\
+    \Function{is-constant-placeholder}{vertice}
+        \If{Il vertice non rappresenta enumerazioni o classi di errore}
+            \If{La classe non ha archi in ingresso implementedBy}
+                \If{La classe ha archi in uscita isChildOf}
+                    \If{Almeno un supertipo non è una constant placeholder op-\\\hspace{2.3cm}pure non è vuoto}
+                        \State{\textbf{return} la classe non è una Unnecessary Abstraction}
+                    \EndIf
+                \EndIf
+
+                \If{Tutti i nodi con arco containedIn verso questo vertice hanno \\\hspace{1.7cm} gli attributi constantAttribute e defaultValue true}
+                    \State{\textbf{return} la classe è una Unnecessary Abstraction}
+                \EndIf
+            \EndIf
+        \EndIf
+    \EndFunction
+    \\
+    \Function{is-over-engineered}{vertice}
+        \If{Il vertice ha un solo arco in ingresso containedIn}
+            \If{Il vertice ha max 2 archi implementedBy in ingresso con nomi \\\hspace{1.1cm} delle funzioni collegate corrispondono a getNomeAttributo oppure \\\hspace{1.1cm} setNomeAttributo}
+                \If{Il vertice ha solo un'arco in ingresso dependsOn da un vertice \\\hspace{1.7cm} che definisce un attributo dello stesso tipo della classe rappresen- \\\hspace{1.7cm}tata dal vertice}
+                    \State{\textbf{return} la classe è una Unnecessary Abstraction}
+                \EndIf
+            \EndIf
+        \EndIf
+    \EndFunction
+\end{algorithmic}

@@ -1,0 +1,65 @@
+
+\subsubsection{Unutilizied Abstraction}
+    Designite è in grado di effettuare la \textit{detection} anche dello \textit{smell} \textit{Unutilizied Abstraction}, rendendo così possibile il confronto con Arcan. I due \textit{tool} presentano strategie di identificazione leggermente differenti, che causano una discrepanza sostanziale nel numero di istanze identificate con 4120 unità in più riscontrate da Designite.
+
+    %Differenza strategia identificazione
+    \paragraph{Strategie di identificazione}
+        La \textit{detection} di Unutilizied Abstraction da parte del \textit{tool} Designite comporta piccole differenze con le strategie di identificazione individuate per Arcan. L'algoritmo definito da Designite per la \textit{detection} dello \textit{smell} è stato definito come segue:
+        \defaultvspace
+        \begin{algorithmic}
+            \Function{designite-uua-detector}{ }
+                \If{il tipo analizzato non ha dipendenze in ingresso}
+                     \State{\textbf{return} l'elemento è una Unutilizied Abstraction}
+                \Else \If{L'elemento analizzato ha supertipi}
+                    \If{Tutti i supertipi non hanno dipendenze in ingresso}
+                        \State{\textbf{return} l'elemento è una Unutilizied Abstraction}
+                    \EndIf
+                \EndIf \EndIf
+            \EndFunction
+        \end{algorithmic}
+        \defaultvspace
+        %
+        Si può notare che non vengono valutati separatamente i due casi \textit{Unreferenced Abstraction} e \textit{Orphan Abstraction} (presentati nella sezione 4.2) a differenza di Arcan che invece effettua controlli differenti a seconda della tipologia di \textit{abstraction} considerata.
+        Non essendoci nessuna distinzione tra tipologia della classe e delle relazioni tra esse, vengono considerati come \textit{smell} tutte le \textit{abstraction} che non presentano dipendenze in ingresso. 
+        %Questa differenza può essere data da due motivi in particolare:
+        %Sono state formulate due ipotesi differenti per giustificare questa differenza nella detection:
+        %\begin{itemize}
+        %    \item Non effettuare la distinzione è stata una scelta implementativa degli sviluppatori. È possibile che sia stata dettata anche da un impossibilità ad effettuare controlli separati a causa del parser e della struttura dati utilizzati.
+            
+        %    \item il parsing effettuato da Designite e la sua architettura permettono di avere solamente dipendenze di un certo tipo per certe classi, perciò un interfaccia senza dipendenze significa che non è stata implementata da nessuno (a differenza di Arcan dove vengono rilevati diversi tipi di nodi, ad esempio dependsOn, anche per le interfacce).
+        %\end{itemize}
+        %\\
+        Viene effettuato inoltre un altro controllo per stabilire se una classe è inutilizzata o meno, attraverso una valutazione dei supertipi della classe sotto analisi. Se la \textit{abstraction} che stiamo considerando presenta dei supertipi, la presenza dello \textit{smell} è verificata, oltre che dalla eventuale assenza di dipendenze in ingresso, anche dalle dipendenze dei supertipi stessi. Se nessuno di essi ne presenta in ingresso allora anche la classe sotto analisi è considerata \textit{unutilizied}. Più in generale si può affermare che Designite considera come tali tutte le \textit{abstraction} figlie di classi senza dipendenze in ingresso. 
+        
+    % Risultati
+    \paragraph{Analisi risultati}
+        Nella tabella 12 vengono riportati i dati relativi alla \textit{detection} effettuata con i due diversi \textit{tool}. Da questi si evince che le istanze dello \textit{smell} trovate da Designite sono in numero maggiore rispetto ad Arcan, con una differenza di 4120 unità. Un'analisi approfondita del funzionamento dei due \textit{tool} ha dimostrato che la causa principale di questo divario può essere ricercata nel \textit{parsing} degli elementi e nelle strutture dati utilizzate. La verifica è stata effettuata selezionando le \textit{abstraction} individuate come \textit{smell} da Designite ma non considerate tali da parte di Arcan, e analizzando successivamente la struttura del grafo delle dipendenze al fine di valutare le relazioni della classe dal punto di vista di Arcan.
+        È stata riscontrata la presenza di diverse classi nel grafo con archi in ingresso e nessun supertipo, perciò a causa delle relazioni presenti non sono state individuati da Arcan come \textit{unutilizied} e la loro rilevazione da parte di Designite non è causata del controllo sui supertipi. Di conseguenza si può concludere che con molta probabilità sia presente una differenza tra le strutture dati e gli algoritmi di \textit{parsing} utilizzati, con le dipendenze che vengono identificate in maniera diversa causando un grande divario di istanze dello \textit{smell} tra i due \textit{tool}.
+        
+        Inoltre un altro fattore che potrebbe influenzare il numero delle istanze è la considerazione come \textit{smell} da parte di Designite di tutti i figli di classi inutilizzate indistintamente dal loro utilizzo o meno. Se queste ultime fossero utilizzate, non verrebbero infatti considerate da Arcan come problema, creando una discrepanza nei risultati. 
+
+    
+        \defaultvspace
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                \textbf{Progetto} & \textbf{N\textsuperscript{o} smell Arcan} & \textbf{N\textsuperscript{o} smell Designite} \\
+                \hline
+                Accumulo & 177 & 1955 \\
+                Beam & 32 & 22\\
+                Bookkeeper & 189 & 906\\
+                Cassandra & 137 & 1927\\
+                Druid & 128 & 203\\
+                Flink & 185 & 431\\
+                Geode & 304 & 1557\\
+                Kafka & 134 & 1118\\
+                Skywalking & 683 & 1182\\
+                Zookeeper & 64 & 336\\
+                \hline
+                Totale & 2033 & 6153\\
+                \hline
+            \end{tabular}
+            \caption{Confronto istanze Unutilizied Abstraction}
+            \label{tab:caption}
+        \end{table}

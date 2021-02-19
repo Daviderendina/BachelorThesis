@@ -1,0 +1,11 @@
+\section{Estensione JavaGraphBuilder}
+
+\subsection{Estensione funzioni}
+
+\subsubsection*{Implementazione funzione getFunctionsInUnit}
+\paragraph{Codice}
+E' stato implementato il codice di questa funzione utilizzando gli stream di java. \\
+In pratica viene fatta una conversione dell'oggetto che viene parsato a CtType, in modo che sia possibile applicare la funzione getMethods (nb. il nome potrebbe non coincidere con il codice) e avere una lista di CtMethod. Questa lista viene poi generato uno stream, e tutti questi metodi sono utilizzati per creare un set di ElementTuple (gli elementi del grafo ?). Infine, vengono aggiunti al grafo i metodi come un nuovo nodo, e una relazione del tipo -nomedeltipo- collega questo nodo del metodo alla classe che lo implementa.
+\paragraph{Logica}
+Per i metodi viene considerata la signature - quindi nomemetodo(tipo1, tipo2, .. ) - e non solamente il nome del metodo. Questo perchè in java, a causa del polimorfismo, i metodi foo() e foo(int) sono diversi, ma considerando solo il nome sarebbero considerati erroneamente uguali. \\
+Inoltre ho scelto di utilizzare il metodo getMethods() al posto di getAllMethods() per recuperare i metodi della classe, così da avere solamente i metodi user-defined e non anche quelli ereditati dalla classe object (rendono solamente più pesante il grafo).

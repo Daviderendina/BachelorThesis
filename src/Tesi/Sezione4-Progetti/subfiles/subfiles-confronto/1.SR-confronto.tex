@@ -1,0 +1,69 @@
+\subsubsection{Subclasses Do Not Redefine Methods} 
+    Come anticipato in precedenza Designite è in grado di fare la \textit{detection} di \textit{Broken Hierarchy}, analogo allo \textit{smell} \textit{Subclasses Do Not Redefine Methods} e presentato anche come suo alias \cite{SURYANARAYANA201521}.
+    
+    \textit{Broken Hierarchy} si verifica quando un supertipo e il suo sottotipo non condividono una relazione IS-A con conseguente interruzione della sostituibilità. Lo \textit{smell} può presentarsi in tre differenti forme:
+    \begin{itemize}
+        \item I metodi del supertipo sono ancora applicabili o rilevanti nel sottotipo, sebbene non sia condivisa una relazione IS-A.
+        
+        \item Il sottotipo eredita funzioni del supertipo che non sono rilevanti o accettabili per i sottotipi.
+        
+        \item L'implementazione del sottotipo rifiuta esplicitamente metodi irrilevanti o inaccettabili ereditati dal supertipo.
+    \end{itemize} \\
+    \\
+    %Differenze nelle definizioni
+    Nonostante la descrizione di \textit{SR} e \textit{BH} possa sembrare differente, in tutte e due gli \textit{smell} non si verifica la condivisione della relazione IS-A da parte delle due classi e viene interrotta la sostituibilità. 
+    
+    %Differenza strategia identificazione
+    \paragraph{Strategie di identificazione}
+        Il controllo effettuato da Designite per la ricerca di \textit{Broken Hierarchy} è analogo a quello effettuato da Arcan, poiché viene effettuata una ricerca di tutte le classi che non condividono almeno un metodo con i loro supertipi. Di seguito è illustrato l'algoritmo utilizzato da Designite per la \textit{detection} di Broken Hierarchy:
+        \defaultvspace
+        \begin{algorithmic}
+            \Function{designite-bh-detector}{ }
+                \If{Il \textit{type} analizzato ha \textit{supertypes} e almeno un metodo pubblico}
+                    \For{Ogni \textit{supertype} del \textit{type} analizzato}
+                        \If{\textit{type} e \textit{supertype} non condividono almeno un metodo}
+                            \State{\textbf{return} l'elemento è una Broken Hierarchy}
+                        \EndIf
+                    \EndFor
+                \EndIf
+            \EndFunction
+        \end{algorithmic}
+        \defaultvspace
+        Si può notare una differenza tra i due algoritmi nella ricerca dei metodi, poiché Designite è in grado di effettuare una loro distinzione per modificatore (\textit{public, private} oppure \textit{protected}) e valuta solamente i metodi effettivamente ereditati da una classe, mentre Arcan considera tutte le funzioni definite dai supertipi indipendentemente dalla loro visibilità.
+        Alcune analisi riguardanti il funzionamento e la struttura del codice di Designite hanno mostrato che per il controllo di \textit{Broken Hierarchy} e in particolare per verificare le condivisione di un metodo da parte di due classi viene utilizzato il nome della funzione e non la \textit{signature}. Anche Designite quindi considera i casi di \textit{overloading} come ridefinizione del metodo, analogamente a quanto è stato deciso per la \textit{detection} in Arcan.
+        
+    \paragraph{Analisi risultati}
+        Nonostante le analogie tra le strategie e gli algoritmi di \textit{detection}, il numero di istanze trovate da Designite (1623) è maggiore rispetto ad Arcan (708), con un divario di 915 unità. È complicato effettuare una ricerca delle cause di questa discrepanza ma una di queste può essere identificata con la differenza nella scelta delle classi da analizzare, poiché Arcan effettua un filtraggio delle \textit{abstraction} rimuovendo tutte le interfacce e le classi di \textit{exception} che Designite invece esamina (si tratta di 286 istanze). 
+        
+        Arcan potrebbe inoltre aver valutato come non affette dallo \textit{smell} diverse \textit{abstraction} che condividono il nome del metodo con una funzione definita nella gerarchia del padre ma dotata di modificatore \textit{private}, non ereditabile quindi dai suoi sottotipi. Designite invece, essendo in grado di discriminare le funzioni ereditate in base al modificatore, non soffre di questo problema. %Per fare un esempio, si può immaginare la presenza di una gerarchia tra tre classi A, B e C, con la classe A che è il primo supertipo della gerarchia e C l'ultimo sottotipo e con le classi A e C che condividono entrambe un metodo \textit{private} chiamato "\textit{bar}".
+        %Mentre Arcan non riconoscerebbe questa situazione come smell, in quanto nella gerarchia due metodi condividono lo stesso nome, lo stesso verrebbe correttamente segnalato da Designite poiché è in grado di discriminare le funzioni ereditate in base ai loro modificatori e, essendo il metodo nella classe A \textit{private}, non verrebbe ereditato da B e quindi non ci sarebbe ridefinizione da parte di C.
+        
+        %Un'ulteriore confronto tra le classi validate trovate da Arcan e i risultati di Designite non ha portato alcun risultato significativo. 
+        %L'unica informazione ricevuta da questa analisi è il fatto che Designite non sembra soffrire dello stesso problema di Arcan con le classi derivate dalle classi di sistema che non sono presenti nel grafo.
+        % Non si vede nessun pattern specifico, alcune classi affette da un probelma (es. la storia delle interfacce del padre astratto) vengono riconosciute come smell da Designite mentre altre affette dallo stesso problema no (in Arcan prima erano considerate FP e dopo le modifiche sono sparite dalla detection).
+        % La diversità nel parsing e nelle strutture dati utilizzate, che può portare inevitabilmente a risultati diversi (poichè ogni strategia adottata e ogni struttura ha i suoi problemi e le sue debolezze)
+        \defaultvspace
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                \textbf{Progetto} & \textbf{N\textsuperscript{o} smell Arcan} & \textbf{N\textsuperscript{o} smell Designite} \\
+                \hline
+                Accumulo & 98 & 71 \\
+                Beam & 5 & 5 \\
+                Bookkeeper & 52 & 149\\
+                Cassandra & 96 & 247\\
+                Druid & 6 & 86\\
+                Flink & 66 & 112\\
+                Geode & 143 & 533\\
+                Kafka & 138 & 243\\
+                Skywalking & 65 & 109\\
+                Zookeeper & 39 & 68\\
+                \hline
+                Totale & 708 & 1623 \\
+                \hline
+            \end{tabular}
+            \caption{Confronto istanze Subclasses Do Not Redefine Methods}
+            \label{tab:caption}
+        \end{table}
+        \defaultvspace

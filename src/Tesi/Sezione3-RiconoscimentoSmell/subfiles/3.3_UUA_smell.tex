@@ -1,0 +1,63 @@
+\subsection{Unutilizied Abstraction}
+    \textit{Unutilizied Abstraction} (\textit{UUA}), definito da G. Suryanarayana et al. \cite{SURYANARAYANA201521}, si manifesta quando una \textit{abstraction} viene lasciata inutilizzata, cioè non direttamente usata o non raggiungibile. Questo \textit{smell} si può manifestare in due forme: 
+        \begin{itemize}
+        \item \textit{Unreferenced Abstraction}, classi concrete che non sono utilizzate da nessuno.
+        
+        \item \textit{Orphan Abstraction}, classi astratte e interfacce che non hanno nessuna abstraction derivata.
+    \end{itemize}
+    %
+    Il principio di astrazione afferma che le \textit{abstraction} dovrebbero avere loro assegnate responsabilità singole e limitate. La presenza di classi e interfacce senza uno scopo specifico nel design e quindi inutilizzate viola il principio, introducendo nel design questo \textit{smell}. Un altro principio violato oltre a quello di astrazione è il principio \textit{YAGNI (You Aren't Gonna Need It} \cite{yagniFowler}, che raccomanda di evitare l'aggiunta di funzionalità non strettamente necessarie al design.
+
+    Le cause che possono portare all'introduzione di \textit{UNA} nel design sono:
+    \begin{itemize} %Sicuramente sistemare la forma - 
+        \item \textit{Design speculativo}: l'introduzione nel design di funzionalità e strutture che potrebbero servire in futuro può portare alla violazione del principio \textit{YAGNI} \cite{yagniFowler} e all'introduzione di \textit{abstraction} attualmente non utilizzate.
+            %una condizione che si verifica quando i progettisti introducono nel design funzionalità e strutture che potrebbero servire in futuro, violando il principio You Aren't Gonna Need It \cite{yagniFowler}.
+            % la tendenza allo sviluppo orientata al futuro è una condizione che si verifica quando
+        
+        \item \textit{Cambio di Requisiti}: il cambiamento di requisiti del progetto potrebbe avere influenza anche sulle \textit{abstraction} impiegate, perciò alcune potrebbero rimanere orfane e non utilizzate.
+            %non è anomalo che durante lo sviluppo di un nuovo sistema i requisiti dello stesso cambino in continuazione, portando agli sviluppatori una continua attività di modifiche e cambi al progetto; proprio per questo motivo, sono stati introdotti i metodi agili \cite{checosa?}. Questi continui cambi di requisiti hanno effetto sulle funzionalità e soprattutto sulle abstraction utilizzate del progetto, che potrebbero quindi non essere più utilizzate e rimanere orfane nel design.
+        
+        \item \textit{Cancellazione parziale delle abstraction}: quando la \textit{manutenzione} di un progetto viene effettuata senza cancellare \textit{abstraction} vecchie e non più utili per il design, lasciando così nel sistema diverse \textit{unutilizied abstraction}.
+            % durante la manutenzione di un progetto, si effettuano diverse attività tra cui appunto la cancellazione delle abstraction non più attive. Se quest'ultima attività viene effettuata parzialmente o non viene proprio svolta, potrebbero rimanere nel progetto abstraction vecchie e che non servono più al design, lasciando così nel sistema diverse Unutilized Abstraction.
+        
+        \item \textit{Paura di rompere il codice}: la cancellazione di \textit{abstraction} potrebbe portare diversi problemi ai programmatori poiché spesso essi decidono di non rimuoverle per paura che vengano ancora utilizzate nel codice. L'introduzione dello \textit{smell} causata da questo timore si verifica soprattutto in progetti che presentano un grande numero di classi e linee di codice.
+        %quando non viene effettuata la cancellazione di abstraction poichè i programmatori hanno paura che quella classe sia ancora utilizzata da qualche parte nel codice e che quindi la loro cancellazione possa portare svariati problemi. Questa condizione si verifica soprattutto in grandi progetti con molte classi e loc.
+    \end{itemize}
+    
+    \paragraph{Nodo di tipo smell nel grafo}
+        Il nodo dello \textit{smell} UUA si presenta come un nodo di tipo \textit{smell} con una singola dipendenza verso la classe che presenta il problema.
+    
+    
+    %Impatto
+     \subsubsection{Impatto sulla qualità del codice e refactoring}
+         \textit{Unutilizied Abstraction} ha un impatto fortemente negativo su due qualità del progetto, ovvero affidabilità e facilità di comprensione del sistema. La presenza di molte classi inutilizzate infatti potrebbe portare ad errori a run-time, se per esempio una di queste dovesse venire erroneamente invocata portandosi dietro piccoli \textit{bug}. Inoltre l'inquinamento del design da parte di molte classi e interfacce diminuisce la comprensione del progetto aumentandone il carico cognitivo, causando anche problemi secondari come difficoltà nello studio del funzionamento del sistema oppure estensione e manutenzione del codice complicate.
+         %e può portare a diversi problemi secondari come difficoltà a studiare il funzionamento del prodotto oppure problemi con l'estensione o la manutenzione del codice.
+        
+        La tecnica di \textit{refactoring} consigliata è l'eliminazione del progetto di tutte le \textit{abstraction} non più necessarie. Nel caso di API pubbliche però l'eliminazione potrebbe non essere la soluzione opportuna, poiché alcune di esse potrebbero ancora essere utilizzate da qualche \textit{client}. La soluzione in questo caso è la segnalazione delle \textit{unutilizied abstraction} come deprecate.
+        % Nel caso di API pubbliche che possono essere ancora utilizzate da qualche client invece, è opportuno segnalare come deprecate le abstraction coinvolte.
+
+    %Problemi
+    
+    %Considerazioni fatte sullo smell (Esempio la cosa dell'overloading per SR)
+    
+    %Strategie di identificazione
+    \subsubsection{Strategie di identificazione}
+        Per l'identificazione dello \textit{smell} \textit{Unutilizied Abstraction} è necessaria l'identificazione di tutte le \textit{abstraction} del progetto inutilizzate oppure non utilizzate per il loro naturale scopo. In particolare, come già analizzato nella sua introduzione, bisogna considerare tutte quelle che appartengono a due differenti categorie:
+        \begin{itemize}
+            \item \textit{Unreferenced Abstractions}, classi concrete non utilizzate da nessuno e senza alcun riferimento all'interno del progetto, interpretato nel grafo come i nodi che non presentano in ingresso alcun arco \textit{dependsOn} proveniente da una classe esterna.
+            Quest'ultima precisazione viene specificata poiché nel grafo di Arcan le \textit{inner class} hanno sempre una relazione \textit{dependsOn} verso il loro contenitore e, senza questa specificazione, le classi \textit{unreferenced} contenenti almeno una classe interna non utilizzata non sarebbero state erroneamente considerate come \textit{smell}. 
+            L'utilizzo di una classe interna da parte di una esterna genera invece nel grafo due differenti archi \textit{dependsOn}, uno in ingresso alla classe utilizzata e l'altro a quella che la contiene. In questo caso, anche se la classe contenitore non viene utilizzata, non viene giustamente considerato come \textit{smell}.  
+            
+            \item \textit{Orphan Abstractions}, classi astratte o interfacce che non vengono implementate o estese. Per quanto riguarda le classi astratte, bisogna ricercare nel grafo tutti i nodi che le rappresentano senza nessun arco \textit{isChildOf} in ingresso; i nodi di tipo interfaccia invece non devono presentare in ingresso, oltre ad archi \textit{isChildOf}, nemmeno nessuna relazione di tipo \textit{isImplementationOf}.
+            %, ovvero nodi del grafo di tipo classe astratta e interfaccia che non presentano nessun arco di tipo \textit{isChildOf} in ingresso, oppure nodi interfaccia che non presentano archi \textit{isImplementationOf} in ingresso. 
+            In questo caso non si deve porre molta attenzione alle classi interne, poiché per la \textit{detection} di questo caso non vengono presi in considerazione gli archi del tipo dependsOn.
+        \end{itemize}
+        
+    \subsubsection{Algoritmo}
+        \paragraph{Input} un sottografo del grafo principale considerando solamente i nodi che rappresentano classi e interfacce e gli archi \textit{isChildOf}, \textit{dependsOn} oppure \textit{isImplementationOf}. 
+        
+        \paragraph{Output} una lista di unit che presentano lo \textit{smell}.
+        
+        \paragraph{Algoritmo}
+        \input{Tesi/Sezione3-RiconoscimentoSmell/algoritmi/algoritmo-UUA}
+    

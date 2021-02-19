@@ -1,0 +1,60 @@
+Per le attività di individuazione degli \textit{smell} e validazione del lavoro svolto sono stati selezionati dieci progetti \textit{open-source} differenti, sviluppati da \textit{Apache Software Foundation} \cite{apache} e disponibili sulla piattaforma \textit{GitHub} \cite{github}. Una descrizione sommaria dei progetti è fornita dalla tabella 1, presentando informazioni riguardanti numero della release analizzata, dominio applicativo e collegamento al progetto disponibile su \textit{Github}.
+
+A causa di alcuni problemi derivati dalle librerie utilizzate per il \textit{parsing} non è stato possibile analizzare tutti e dieci i progetti completi in tutti i loro componenti, perciò per alcuni di essi è stata necessaria l'analisi solamente del modulo principale del sistema. Nello specifico, per i progetti \textit{Druid}, \textit{Flink} e \textit{Geode} è stato utilizzato il modulo \textit{core} mentre per \textit{Beam} il modulo \textit{beam-runners core-java}.
+Per l'analisi inoltre sono state escluse tutte le classi di test, in quanto considerate non molto significative ai fini del lavoro di ricerca degli \textit{smell} e loro validazione.
+
+Informazioni più dettagliate sui progetti riguardanti modulo analizzato, righe di codice (\textit{LOC}) e numero di unit e package analizzati sono verificabili nella tabella 2. \\
+
+% TABELLA DESCRIZIONE
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Progetto} & \textbf{Link} & \textbf{Release} & \textbf{Dominio applicativo}  \\
+        \hline
+        Accumulo & \cite{accumulogithub} & 2.0.0 & Distributed key/value data store  \\
+        %\hline
+        Beam & \cite{beamgithub} & 2.20.0 & Unified programming model  \\
+        %\hline
+        Bookkeeper & \cite{bookkeepergithub} & 4.10.0 & Storage service  \\
+        %\hline
+        Cassandra & \cite{cassandragithub} & 3.11.6 & Distributed NoSQL DBMS  \\
+        %\hline
+        Druid & \cite{druidgithub} & 0.18.0 & Distributed data store  \\
+        %\hline
+        Flink & \cite{flinkgithub} & 1.10.0 & Distributed processing engine  \\
+        %\hline
+        Geode & \cite{geodegithub} & 1.12.0 & In-memory data management system  \\
+        %\hline
+        Kafka & \cite{kafkagithub} & 2.5.0 & Distributed platform  \\
+        %\hline
+        Skywalking & \cite{skywalkinggithub} & 7.0.0 & Application performance monitor system  \\
+        %\hline
+        Zookeeper & \cite{zookeepergithub} & 3.6.0 & Services for distributed system  \\
+        \hline
+    \end{tabular}
+    \caption{Informazioni progetti analizzati}
+    \label{tab:caption}
+\end{table}
+\defaultvspace
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Progetto} & \textbf{Modulo} & \textbf{N\textsuperscript{o} classi} & \textbf{N\textsuperscript{o} package} & \textbf{N\textsuperscript{o} LOC}  \\
+        \hline
+        Accumulo & - & 3 789 & 212 & 43 682 818 \\
+        Beam & core-java & 201 & 8 & 52 414 \\
+        Bookkeeper & - & 2 036 & 252 & 1 495 659 \\
+        Cassandra & - & 3 910 & 116 & 33 968 645 \\
+        Druid & druid-core & 736 & 63 & 369 487 \\
+        Flink & flink-core & 915 & 49 & 148 600 \\
+        Geode & geode-core & 4 293 & 190 & 2 236 679\\
+        Kafka & - & 2 389 & 138 & 575 967 \\
+        Skywalking & - & 979 & 526 & 141 674 \\
+        Zookeeper & - & 755 & 52 & 269 378 \\
+        \hline
+    \end{tabular}
+    \caption{Dettaglio progetti analizzati}
+    \label{tab:caption}
+\end{table}

@@ -1,0 +1,30 @@
+\begin{algorithmic}
+\Function{dfs-subclasses}{G}
+    \For{vertice v in G.V}
+        \If{not v.visited}
+            \State{\Call{dfs-visit-subclasses}{G, v}}
+        \EndIf
+    \EndFor
+\EndFunction
+\\
+\Function{dfs-visit-subclasses}{G, v}
+    \State{v.visited = true}
+    \For{u in Adj(v)}
+        \If{not u.visited}
+            \If{(v,u) is isChildOf}
+                \State{smellDetected = \Call{subclasses-redefine-methods}{v,u}}
+                \If{smellDetected}
+                    \State{smellClasses.add(v)}
+                \EndIf
+            \EndIf
+            \State{\Call{dfs-visit-subclasses}{G, u}}
+        \EndIf
+    \EndFor
+\EndFunction \Comment{E' possibile ottimizzare facendo in modo che le classi in cui sia già stato trovato lo smell non vengano ricontrollate}
+\\
+\Function{subclasses-redefine-methods}{father,son}
+    \State{fatherMethods = father.getMethods()}
+    \State{sonMethods = son.getMethods()}\\
+    \Return{(not $fatherMethods \cap sonMethods == \emptyset$)}
+\EndFunction
+\end{algorithmic}

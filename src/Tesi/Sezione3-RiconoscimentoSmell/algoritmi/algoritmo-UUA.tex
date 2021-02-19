@@ -1,0 +1,24 @@
+\begin{algorithmic}
+\Function{unutilizied-abstraction-detector}{}
+\State{Prendo la lista di tutti i nodi unit}
+\For{Ogni vertice della lista}
+    \If{Il vertice è di tipo classe o enum}
+        \State{Considero tutti i nodi con un arco dependsOn in uscita verso}
+        \State{il vertice}
+    \EndIf
+    \If{Il vertice è di tipo classe astratta}
+        \State{Considero tutti i nodi con un arco isChildOf verso il vertice}
+    \EndIf
+    \If{Il vertice è di tipo interfaccia}
+        \State{Considero tutti i nodi con un arco dependsOn oppure }
+        \State{isChildOf verso il vertice}
+    \EndIf
+    
+    \If{I nodi considerati sono 0 oppure sono tutti classi interne}
+        \State{Aggiungi il nodo alla lista degli smell}
+    \EndIf
+    
+\EndFor
+\EndFunction 
+\end{algorithmic}
+

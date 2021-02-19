@@ -1,0 +1,7 @@
+\subsection{Subclasses does not redefine methods}
+Devo controllare che l'intersezione tra i metodi padre e figlio sia diversa dall'insieme vuoto (cioè almeno un metodo deve essere ridefinito).\\
+Le classi candidate (figlio) sono quelle che hanno una relazione del tipo isImplementationOf oppure isChildOf di una qualche interfaccia/classe padre. \\
+Facendo DFS, controllo ogni volta che trovo una relazione di quel tipo (A <rel> B) che A implementi almeno un metodo di B.
+\paragraph{Classi che non hanno metodi} se il padre non ha metodi, ho deciso (giustamente ?) di non considerlarlo come smell, poichè non c'è nessun metodo da estendere.  
+\subsubsection*{Algoritmo}
+\input{Stage/identificazione-smells/subclasses-smell/algoritmo-subclasses}

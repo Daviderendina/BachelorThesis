@@ -1,0 +1,49 @@
+\subsubsection{Subclasses Does Not Redefine Methods}
+        Per effettuare la validazione di \textit{Subclasses Do Not Redefine Methods} sono state analizzate le superclassi di ogni unit segnalata dall'algoritmo come istanza, al fine di verificare che le due classi condividessero almeno un metodo. Fondamentale è stato il supporto fornito dall'ambiente di sviluppo IntelliJ IDEA \cite{intelliJ}, in grado di fornire informazioni riguardanti l'\textit{override} delle funzioni all'interno delle diverse classi o interfacce. 
+        
+        La \textit{precision} calcolata su questo algoritmo è del 89.75\%, con 359 veri positivi su un totale di 400 unit analizzate.
+        % Modifiche alla detection dopo prima validazione
+        %Una prima fase di validazione aveva visto questo algoritmo avere una precision del 73\%, con 418 istanze validate di cui 307 vere positive. 
+        Una prima validazione di \textit{SR} aveva mostrato un valore di \textit{precision} del 73\%, con 418 istanze validate di cui 307 veri positivi.
+        Al termine di questa fase è stata notata la presenza di numerosi falsi positivi, che ha portato allo studio dei casi riscontrati al fine di effettuare modifiche per favorire la diminuzione del loro numero e migliorare la precisione dell'algoritmo.
+        %e si è optato per la rimozione degli stessi al fine di migliorare la \textit{precision} dello stesso. 
+        A tal proposito, è stata introdotta un'unica modifica alle strategie di detection: nella ricerca dei metodi ereditati dal supertipo, sono stati considerati anche tutti i metodi delle interfacce implementate da classi astratte.
+        Questa modifica ha permesso l'aumento del valore di \textit{precision} di circa 17 punti percentuali, passando da 307 VP su 418 istanza analizzate a 359 VP su un totale di 400. La correzione effettuata ha portato inoltre alla eliminazione di 166 istanze totali, di cui 78 falsi positivi e 5 veri positivi (dei restanti non si hanno informazioni perché non selezionati per la validazione).
+        %. Tra gli smell validati si è assistito quindi a una rimozione del 94\% di falsi positivi e questa percentuale così alta fa pensare che anche tra gli smell non validati fossero presenti molti casi di falsa positività.
+        
+        \paragraph{Analisi dei falsi positivi}
+            Nonostante le modifiche effettuate, è stata riscontrata la presenza di ulteriori situazioni di istanze risultate come false positive, che per diversi motivi non è stato possibile eliminare.
+            %Sono presenti alcune situazioni nelle quali l'algoritmo segnala la presenza di falsi positivi; in generale, si è verificato nel xpercento dei casi per questo smell. 
+            Tra le differenti situazioni, verrà approfondita solamente quella relativa alla estensione delle classi esterne al sistema, poiché è stata riscontrata con una certa rilevanza durante la validazione. 
+            Siccome i componenti di Arcan, in particolare il \textit{System Reconstructor}, costruiscono il grafo solamente a partire dal codice sorgente ricevuto come input, diverse dipendenze esterne non vengono considerate nella generazione del grafo.
+            %Quando una classe di sistema è inclusa in una gerarchia, può verificarsi che sia presente una gerarchia di classi derivate tutte da essa. 
+            Può verificarsi il caso di presenza nel sistema di una gerarchia, che presenta come primo elemento una classe di sistema.
+            Se una classe di questa gerarchia, non figlia direttamente della classe di sistema, ridefinisce solamente i suoi metodi, viene considerata erroneamente come \textit{smell} poiché quest'ultima non è presente nel grafo in quanto dipendenza esterna. Se invece si considera una classe figlia direttamente di una classe esterna, la relazione tra le due classi non viene considerata nella ricerca dello \textit{smell} poiché non viene rappresentata nel grafo.
+            %Quando una classe di sistema è inclusa in una gerarchia si possono verificare due casi differenti. Se una classe ne estende un'altra che a sua volta è figlia di una classe di sistema, e l'ultima classe della gerarchia ridefinisce solamente metodi della classe di sistema, viene considerato erroneamente come smell, poiché non essendo presente il nodo della classe di sistema nel grafo non vengono considerati i suoi metodi. Se una classe invece estende direttamente una di sistema, questa gerarchia non viene considerata come smell a prescindere dal fatto che ridefinisca o meno i suoi metodi, poichè la gerarchia non è presente nel grafo.
+            Facendo un esempio del primo caso, se una classe B estende una classe A che a sua volta è sottotipo di Beans \cite{javadocWebsite} e B effettua \textit{override} del metodo \textit{instantiate} di Beans, la classe B risulterebbe erroneamente come contenente lo \textit{smell} \textit{SR}.
+            
+           % \item \textit{Metodi astratti} Il parser utilizzato \cite{pawlak:hal-01169705} non riconosce i metodi astratti nelle classi e perciò non vengono aggiunte alle varie classi. Questo ovviamente comporta un problema quando una classe ne estende un'altra e ridefinisce un suo metodo astratto poichè, non essendoci il metodo astratto nel grafo, non viene riconosciuto come override e quindi risulta all'algoritmo come un AS (?). %Ridefinisce i metodi dell'interfaccia implementata dal padre, che però è abstract e quindi può anche non ridefinirli (considerato come VP ma mooolto indeciso)
+            
+            \begin{table}[h]
+                \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    \textbf{Progetto} & \textbf{Analizzati} & \textbf{Veri positivi} & \textbf{Falsi positivi} \\
+                    \hline
+                    Accumulo & 50 & 50 & 0 \\
+                    Beam & 5 & 4 & 1 \\
+                    Bookkeeper & 50 & 45 & 5  \\
+                    Cassandra & 50 & 43 & 7 \\
+                    Druid & 6 & 6 & 0 \\
+                    Flink & 50 & 49 & 1 \\
+                    Geode & 50 & 48 & 2 \\
+                    Kafka & 50 & 50 & 0 \\
+                    Skywalking & 50 & 49 & 1 \\
+                    Zookeeper & 39 & 15 & 24 \\
+                    \hline
+                    Totale & 400 & 359 & 41 \\
+                    \hline
+                \end{tabular}
+                \caption{Risultati validazione Subclasses Do Not Redefine Methods}
+                \label{tab:caption}
+            \end{table}

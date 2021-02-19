@@ -1,0 +1,42 @@
+%UUA
+    \subsubsection{Unutilizied Astraction}
+        La validazione di \textit{Unutilizied Abstraction} è stata effettuata verificando gli utilizzi di ogni classe e interfaccia segnalata come istanza dello \textit{smell} all'interno del progetto. I casi risultati come falsi positivi hanno comportato un'ulteriore analisi della struttura del grafo, al fine di comprendere le motivazioni che hanno portato alla loro \textit{detection}.
+        % La valiudazione di questo smell è stata effettuata controllando gli utilizzi di ogni classe o interfaccia coninvolta nel progetto; i casi che sono risultati come FP hanno visto anche un'approfondimento della struttura del grafo, al fine di comprendere i motivi che hanno portato a questi FP.
+        
+        Uno strumento fondamentale durante la validazione è stato l'ambiente di sviluppo IntelliJ IDEA \cite{intelliJ}. Grazie allo strumento messo a disposizione da questo \textit{IDE} per la ricerca delle \textit{references} di una classe o interfaccia, è stato possibile ottenere informazioni riguardanti gli utilizzi dell'elemento analizzato all'interno del progetto.\\
+            %, è stato possibile ricercare le \textit{references} nel progetto di una determinata classe o interfaccia ottenendo anche indicazioni sull'utilizzo effettuato. con la conseguenza che non è stata necessaria la verifica di tutte le references nel codice. 
+        \\
+        La \textit{precision} riscontrata sull'algoritmo è del 95.43\%, con 418 veri positivi su 439 istanze analizzate. Grazie all'alta percentuale riscontrata, non è stato ritenuto necessario effettuare modifiche agli algoritmi successive alla prima validazione.
+            %Le precisione dell'algoritmo è molto soddisfacente e, a differenza degli altri due smell, non sono state effettuate modifiche successive alla prima validazione in quanto i risultati sono stati giudicati soddisfacenti.
+        
+        \paragraph{Analisi di falsi positivi}
+            La maggioranza delle istanze riscontrate è riferito a classi di esempio, che sono parte del progetto ma non vengono utilizzate da nessuno.
+            % Il numero di falsi positivi riscontrati in questo smell è molto esiguo. La maggioranza di queste istanze è dato da classi relativi ad esempi, che ovviamente fanno parte del progetto ma non vengono utilizzate da nessuno. 
+            Un ulteriore causa identificata che ha portato la presenza di falsi positivi è legata al \textit{parsing}, poiché alcune \textit{references} di classi trovate nel codice non hanno trovato riscontro nel grafo delle dipendenze. È stato notato in particolare che gli utilizzi all'interno di classi anonime non vengono rilevati dal \textit{tool}, in quanto nel grafo non sono presenti i nodi rappresentanti classi anonime e le relative dipendenze.
+            
+            % Altre cause che hanno portato alla presenza di queste istanze sono dovuti tutti al parsing degli elementi ed al grafo e alla mancanza nello stesso di dipendenze tra gli elementi. 
+            %In particolare, si segnala che l'utilizzo da parte di classi anonime non viene rilevato dal tool, poichè nel grafo non sono presenti i nodi rappresentanti le classi anonime e quindi nemmeno le dipendenze tra quest'ultime e le classi utilizzate. 
+            \defaultvspace
+            \begin{table}[h]
+            \centering
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    \textbf{Progetto} & \textbf{Analizzati} & \textbf{Veri positivi} & \textbf{Falsi positivi} \\
+                    \hline
+                    Accumulo & 50 & 44 & 6 \\
+                    Beam & 32 & 32 & 0 \\
+                    Bookkeeper & 50 & 50 & 0  \\
+                    Cassandra & 50 & 50 & 0 \\
+                    Druid & 50 & 49 & 1 \\
+                    Flink & 50 & 50 & 0 \\
+                    Geode & 50 & 48 & 2 \\
+                    Kafka & 50 & 41 & 9 \\
+                    Skywalking & 50 & 47 & 3 \\
+                    Zookeeper & 28 & 28 & 0 \\
+                    \hline
+                    Totale & 460 & 439 & 21 \\
+                    \hline
+                \end{tabular}
+                \caption{Risultati validazione Unutilizied Abstraction}
+                \label{tab:caption}
+            \end{table}

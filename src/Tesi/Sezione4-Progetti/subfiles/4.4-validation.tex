@@ -1,0 +1,52 @@
+    %Introduzione e spiegazione concetti fondamentali
+    Questa sezione descrive in dettaglio la fase di validazione degli algoritmi, con descrizione delle attività svolte e discussione dei risultati ottenuti.
+    %Questa sezione descrive nel dettaglio le attività svolte e i risultati ottenuti dalla fase di \textit{validation} degli algoritmi.
+    Prima di approfondire questi aspetti è però necessaria l'introduzione di alcuni concetti fondamentali, al fine di favorire la comprensione delle attività descritte.
+    
+    %Veri e falsi positivi
+    I primi concetti introdotti sono \textit{true positive} (vero positivo, VP) e \textit{false positive} (falso positivo, FP). Con il termine \textit{true positive} si indicano le istanze di smell trovate dagli algoritmi che risultano come problemi reali mentre \textit{false positive} indica il contrario, ovvero tutte le istanze individuate che però non risultano tali. 
+    
+    %Metrica Precision
+    Il numero di veri e falsi positivi trovati da un algoritmo è fondamentale per il calcolo della metrica \textit{Precision} \cite{wikiPrecisionRecall}. Questa metrica è indice della precisione dell'algoritmo sviluppato in termini di numero di veri positivi in rapporto al totale di casi analizzati e può essere descritta dalla formula seguente:
+    $$Precision = { \mbox{\textit{false positives}} \over \mbox{\textit{true positives}} + \mbox{\textit{false positives}}}$$
+    
+%Come è stata fatta la validazione? 
+    Per lo svolgimento delle attività di validazione sono state selezionate un numero fisso di 50 classi per ogni \textit{smell} in ogni progetto, segnalate dall'algoritmo di \textit{detection}. Nei casi in cui il numero di istanze fosse minore, sono state prese in considerazione tutte quelle presenti anche in numero inferiore.
+    
+    Ogni elemento coinvolto è stato analizzato manualmente attraverso l'osservazione del codice sorgente, allo scopo di verificare la presenza effettiva dello \textit{smell} e analizzare le cause che hanno portato l'elemento a essere considerato come tale. Per la validazione di \textit{Unnecessary Abstraction} sono state prese, ove possibile, un numero uguale di classi per ogni tipologia presente. Le successive analisi presenteranno i risultati ottenuti dalla \textit{detection} di \textit{UNA} considerando sia i valori generici ottenuti per lo \textit{smell} sia i tre casi distinti.
+    
+    Lo studio dei falsi positivi riscontrati ha fatto emergere la necessità di effettuare modifiche agli algoritmi e agli algoritmi di \textit{parsing}, al fine di rimuovere alcune tipologie ricorrenti di falsi positivi e migliorare la \textit{precision} della \textit{detection}. 
+ 
+  %  Validazione incrociata? 
+    Al fine di garantire una maggior precisione nella validazione degli algoritmi, è stata effettuata un'attività di validazione incrociata con un'altra laureanda \cite{rotaPhdTdthesis}. Questa attività ha portato a un'analisi e validazione doppia dei falsi positivi, con successive valutazioni e verifica dei casi dove il risultato delle due non coincideva. %Scrivo i benefici che ha portato?
+    
+   La tabella 5 presenta in maniera sintetica i risultati ottenuti dalla validazione delle \textit{detection} degli algoritmi \textit{SR}, \textit{UNA} e \textit{UUA}, e fornisce informazioni sul numero totale di \textit{smell} analizzati e il numero di falsi positivi riscontrati. Un'ulteriore colonna indica il valore della metrica \textit{Precision} per l'algoritmo considerato. 
+   \defaultvspace
+    \begin{table}[h]
+            \centering
+            \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                \textbf{Smell} & \textbf{Analizzati} & \textbf{ VP } & \textbf{ FP } & \textbf{Precision} \\
+                \hline
+                Subclasses Do Not Redefine M. & 400 & 359 & 41 & 89.75\% \\ 
+                Unutilizied Abstraction & 460 & 439 & 21 & 95.43\% \\
+                Unnecessary Abstraction & 448 & 330 & 118 & 73.66\% \\
+                \hline
+        \end{tabular}
+        \caption{Panoramica validazione}
+        \label{tab:caption}
+    \end{table}
+    \defaultvspace \\
+    Le tre sottosezioni successive analizzeranno nel dettaglio la validazione di ogni singolo \textit{smell}. Verrà posta maggior enfasi sulle tecniche utilizzate, sui \textit{tool} impiegati come supporto e saranno approfondite le diverse cause della presenza di falsi positivi.
+    
+    
+    %Subclasses does not redefine
+    \input{Tesi/Sezione4-Progetti/subfiles/subfiles-validation/1.SR-validation}
+    
+    %Unutilizied Abstraction
+    \input{Tesi/Sezione4-Progetti/subfiles/subfiles-validation/2.UUA-validation}
+        
+    %Unnecessary Abstraction
+    \input{Tesi/Sezione4-Progetti/subfiles/subfiles-validation/3.UNA-validation}
+    
+    

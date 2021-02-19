@@ -1,0 +1,38 @@
+%Figli che ridefiniscono almeno un metodo del padre
+
+MATCH (ff)-[:implementedBy]->(father)<-[:isChildOf]-(child)<-[:implementedBy]-(cf)
+WHERE ff.name = cf.name
+return DISTINCT child
+
+% Numero di smell del tipo Subclasses
+
+MATCH (ff)-[:implementedBy]->(father)<-[:isChildOf]-(child)<-[:implementedBy]-(cf)
+WHERE ff.name = cf.name
+WITH count(DISTINCT child) as ns
+MATCH (childGeneral)-[:isChildOf]->()
+WITH count(DISTINCT childGeneral) as TotalChildNodes, ns as ChildNodeThatRedefines, (count(DISTINCT childGeneral) - ns) as NumberOfSmells 
+RETURN TotalChildNodes, ChildNodeThatRedefines, NumberOfSmells
+
+% Trova i nodi che contengono lo smell
+
+MATCH (methodF)-[:implementedBy]->(father)<-[:isChildOf]-(child)<-[:implementedBy]-(methodC)
+WHERE methodF.name = methodC.name
+with collect(child) as childsOK
+MATCH (child2)-[:isChildOf]->(father2)
+WHERE NOT child2 IN childsOK
+RETURN DISTINCT child2;
+
+
+% Trova i nodi che contengono lo smell escludendo i figli dei padri che non hanno alcun metodo
+
+MATCH (methodF)-[:implementedBy]->(father)<-[:isChildOf]-(child)<-[:implementedBy]-(methodC)
+WHERE methodF.name = methodC.name
+with collect(child) as childsOK
+MATCH (child2)-[:isChildOf]->(father2)
+WHERE (NOT child2 IN childsOK) AND ((father2)<-[:implementedBy]-())
+RETURN DISTINCT child2.name
+
+% Unutilizied smell
+match (n {labelV:"unit"}) where not (n)<-[]-() return n
+UNION
+MATCH ()-[r]->(n) WHERE n.componentType starts with "nested" WITH n, count(r) as rel_cnt WHERE rel_cnt = 1 RETURN n;

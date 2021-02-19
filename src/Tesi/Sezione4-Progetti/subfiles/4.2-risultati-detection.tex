@@ -1,0 +1,70 @@
+L'analisi dei progetti è stata effettuata attraverso l'esecuzione di Arcan, in grado di generare in \textit{output} diversi file in formato \textit{csv} per ogni sistema analizzato. I file generati per un singolo progetto forniscono informazioni riguardanti:
+\begin{itemize}
+    \item I valori delle metriche (come \textit{instability, LOC}) calcolate su tutti gli elementi presenti nell'applicativo.
+    
+    \item Le unit colpite dallo \textit{smell} (con relazione \textit{affects} verso il nodo che lo rappresenta) e la tipologia riscontrata.
+    
+    \item Tutte le unit collegate ad un nodo di tipo \textit{smell}, con indicazione sulla tipologia di relazione tra i due elementi.
+\end{itemize}
+L'analisi di questi tre \textit{file} ha permesso lo studio e la validazione dei risultati ottenuti dagli algoritmi.
+
+La \textit{detection} degli \textit{smell} sui progetti \textit{Apache} ha evidenziato la presenza di numerose istanze. In particolare sono stati rilevate 708 \textit{Subclasses Do Not Redefine Methods}, 2033 \textit{Unutilizied Abstraction} e 2491 \textit{Unnecessary Abstraction}. Il dettaglio riguardante il numero di \textit{smell} trovati nei vari progetti è presentato nella tabella 3. 
+
+Come si evince dai risultati, \textit{Subclasses Do Not Redefine Methods} è lo \textit{smell} che presenta il numero minore di istanze; la causa principale di ciò può essere identificata nel numero differente di elementi analizzati per la ricerca. Infatti \textit{UUA} e \textit{UNA} effettuano la loro \textit{detection} controllando ogni \textit{abstraction} all'interno del progetto, mentre questo \textit{smell} considera solamente le gerarchie presenti (e le relative \textit{unit} coinvolte), che sono sicuramente in numero minore rispetto alle classi e interfacce del sistema. 
+\defaultvspace
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Progetto} & \textbf{Subclasses Do Not} & \textbf{Unutilizied} & \textbf{Unnecessary}  \\
+         & \textbf{Redefine Methods} & \textbf{Abstraction} & \textbf{Abstraction}\\
+        \hline
+        Accumulo & 98 & 177 & 1113 \\
+        Beam & 5 & 32 & 13 \\
+        Bookkeeper & 52 & 189 & 96  \\
+        Cassandra & 96 & 137 & 639 \\
+        Druid & 6 & 128 & 52 \\
+        Flink & 66 & 185 & 47 \\
+        Geode & 143 & 304 & 166  \\
+        Kafka & 138 & 134 & 119 \\
+        Skywalking & 65 & 683 & 208\\
+        Zookeeper & 39 & 64 & 38 \\
+        \hline
+        Totale & 708 & 2033 & 2491 \\
+        \hline
+    \end{tabular}
+    \caption{Numero di istanze individuate nei progetti}
+    \label{tab:caption}
+\end{table} 
+\defaultvspace \\
+%
+Per quanto riguarda \textit{Unutilizied Abstraction} invece si può affermare che la presenza di un alto numero di istanze può essere causato da due fattori principali. La semplicità con la quale questo \textit{smell} può essere introdotto nel design è sicuramente uno di questi, poiché le cause della sua manifestazione sono molto comuni nello sviluppo software.
+Inoltre la presenza di \textit{UUA} può verificarsi anche in seguito alla manifestazione "effetto collaterale" della presenza di \textit{Unnecessary Abstraction}. Un esempio può essere la creazione di una classe \textit{constant placeholder}, quando la \textit{abstraction} è rappresentata da un'interfaccia che non viene implementata ma solamente utilizzata via \textit{dot notation}. In questo caso il nodo non avrà alcun arco in ingresso ad eccezione di \textit{dependsOn}, facendo risultare l'interfaccia sia come \textit{unnecessary} che \textit{unutilizied}.
+
+In merito a \textit{Unnecessary Abstraction} ritengo che 
+%la difficoltà ad inquadrare una situazione ben precisa dello
+la definizione non molto dettagliata dello \textit{smell} e soprattutto la necessità di identificare il caso delle classi procedurali abbiano portato ad un elevato numero di istanze individuate. La situazione descritta da \textit{UNA} è un po' ambigua, siccome non espone come gli altri una scenario ben definito ma si riferisce genericamente a classi "non necessarie per il design". Attraverso le cause che lo introducono \cite{SURYANARAYANA201521} è stata possibile la definizione di tre sue diverse tipologie, ma è comunque presente il caso delle \textit{procedural class}
+che risulta molto difficoltoso da identificare, poiché le classi procedurali derivano principalmente dalle intenzioni dello sviluppatore piuttosto che dalla sua struttura e dai metodi e attributi definiti.
+La loro ricerca ha influenzato in maniera significativa l'alto numero di \textit{Unnecessary Abstraction} presenti, come evidenziato dai dati riportati nella tabella 4, dove si evince che il 92\% dei casi riportati sono dovuti proprio a questa categoria di classi (2275 istanze su 2491 totali), a differenza di \textit{constant placeholder} e \textit{over engineered} che hanno un incidenza sul totale rispettivamente del 7\% e 1\% (con 178 e 17 casi individuati). 
+L'alto di numero di classi procedurali è a sua volta influenzato fortemente dal progetto Accumulo, dove sono presenti in totale 1113 classi identificate come \textit{smell}, che rappresentano il 44\% dei casi totali riscontrati su tutti i progetti. Anche qui la casistica più frequente è quella delle \textit{procedural class}, con ben 996 istanze trovate. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Tipologia} & \textbf{Istanze smell} & \textbf{Incidenza totale}\\
+        \hline
+        Constant placeholder & 178 & 7\% \\
+        Over engineered & 17 & 1\% \\
+        Procedural class & 2275 & 92\% \\
+        \hline
+    \end{tabular}
+    \caption{Dettaglio istanze smell Unnecessary Abstraction}
+    \label{tab:caption}
+\end{table}
+
+
+  
+    
+    
+

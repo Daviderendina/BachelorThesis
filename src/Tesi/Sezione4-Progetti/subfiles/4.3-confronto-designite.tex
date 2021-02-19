@@ -1,0 +1,48 @@
+Questa sezione propone un confronto tra i \textit{tool} Arcan e Designite \cite{Designite} , attraverso la \textit{detection} degli \textit{smell} \textit{SR, UUA e UNA} sui progetti Apache \cite{apache} presentati nella sezione 5.1.
+% Questa sezione presenta un confronto riguardante i risultati ottenuti dall'analisi dei dieci progetti Apache \cite{apache} dalla detection effettuata con due tool differenti, Arcan e Designite \cite{Designite} (già introdotto nella sezione 2 \textit{Lavori correlati}). 
+
+Il confronto non affronterà solamente la differenza tra la detection tra i due \textit{smell} in termini di istanze trovate, ma verranno effettuate anche analisi delle strategie di riconoscimento adottate dai due tool. Le strategie e gli algoritmi di riconoscimento sono stati esaminati attraverso ispezione del codice sorgente di Designite disponibile sulla piattaforma GitHub \cite{designiteGithub}.
+
+È stato selezionato il tool Designite in merito a due considerazioni fondamentali:
+%Per la selezione del tool da confrontare con il lavoro svolto su Arcan, la scelta è ricaduta su Designite per due considerazioni fondamentali:
+\begin{enumerate}
+    \item È in grado di effettuare la detection di \textit{Unutilizied Abstraction}, \textit{Unnecessary Abstraction} e di \textit{Broken Hierarchy (BH)}, uno \textit{smell} analogo a \textit{Subclasses Do Not Redefine Methods} citato come alias di \textit{BH} da G. Suryanarayana \cite{SURYANARAYANA201521}.
+    
+    \item La sua natura \textit{open-source} permette l'analisi del codice in maniera semplice e veloce.
+\end{enumerate}\\
+Per il confronto è stata preferita la presentazione degli algoritmi singolarmente, al fine di evidenziare in maniera chiara la discrepanza tra le strategie adottate e i valori ottenuti. La tabella 10 mette in risalto le diversità riscontrate nella detection dei progetti analizzati. Per lo \textit{smell} \textit{Unnecessary Abstraction} è indicato tra parentesi il numero di \textit{constant placeholder} trovati poiché Designite ricerca solamente questo particolare caso. 
+%
+\defaultvspace
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Tool} & \textbf{N\textsuperscript{o} SR} & \textbf{N\textsuperscript{o} UUA} & \textbf{N\textsuperscript{o} UNA}  \\
+        \hline
+        Arcan & 708 & 2033 & 2491 (178) \\
+        Designite & 1623 & 6153 & 440 \\
+        \hline
+    \end{tabular}
+    \caption{Differenza in numero assoluto per smell}
+    \label{tab:caption}
+\end{table}
+\defaultvspace
+\\
+Come mostrato dai dati presentati dalla tabella 10, il \textit{tool} Designite è in grado di trovare un numero maggiore di istanze rispetto ad Arcan in merito a \textit{Subclasses Do Not Redefine Methods} e \textit{Unutilizied Abstraction}, rispettivamente con una differenza di 915 e 4120. Per quanto riguarda \textit{Unnecessary Abstraction} è Arcan a trovare un numero di \textit{smell} maggiore con 2051 istanze in più ma, limitando solamente il confronto al caso \textit{constant placeholder}, il numero di trovato da Designite è maggiore di 262 unità.
+
+Il confronto tra questi \textit{smell} verrà approfondito nei tre paragrafi successivi. L'analisi è stata svolta seguendo la stessa struttura: a una piccola introduzione seguono considerazioni e differenze tra gli algoritmi di \textit{detection}, per concludere con la valutazione dei risultati ottenuti.
+
+%Per quanto riguarda i risultati però va fatta una precisazione: in molti casi anche la struttura dati è fondamentale e ha un forte impatto sui FP considerati. Ovvero, Designite è specifico per Java mentre Arcan no, quindi alcuni costrutti sono trattati diversamente dai due parser e Des. ha info in più. Un'altro esempio è il grafo che non ha le classi Thread e risultano tutte smell ecc...
+
+
+%Subclasses Do Not Redefine Methods
+\input{Tesi/Sezione4-Progetti/subfiles/subfiles-confronto/1.SR-confronto}
+
+%Unutilizied Abstraction
+\input{Tesi/Sezione4-Progetti/subfiles/subfiles-confronto/2.UUA-confronto}
+
+%Unnecessary Abstraction
+\input{Tesi/Sezione4-Progetti/subfiles/subfiles-confronto/3.UNA-confronto}
+
+%Conclusioni
+\input{Tesi/Sezione4-Progetti/subfiles/subfiles-confronto/4.conclusioni}

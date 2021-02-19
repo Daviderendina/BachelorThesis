@@ -1,0 +1,15 @@
+\subsection{Unutilized abstraction}
+Questo smells si presenta in due forme:
+\begin{enumerate}
+    \item Non utilizzo classi concrete
+    \item Astrazioni orfane
+\end{enumerate}
+\subsubsection*{Identificazione dello smell}
+Devo controllare la presenza di
+\begin{enumerate}
+    \item classi concrete (nodi di tipo classe) che non sono usate da nessuno, quindi che non hanno alcuna relazione in ingresso del tipo \textit{dependsOn} oppure \textit{isChildOf} (anche se nessuno utilizza strettamente la classe ma questa ha delle sottoclassi, la classe è considerata come utilizzata) 
+    \item classi astratte/interfacce che non hanno alcuna relazione in ingresso di tipo \textit{isChildOf} oppure \textit{isImplementationsOf}
+    \item Bisogna prestare attenzione alle classi/interfacce definite all'interno di altre
+\end{enumerate}
+\subsubsection*{Algoritmo}
+\input{Stage/identificazione-smells/unutilizied-smell/algoritmo-unutilized}

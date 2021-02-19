@@ -1,0 +1,24 @@
+\subsubsection{Conclusioni}
+La sezione 5.4 ha illustrato un confronto tra i due \textit{tool} Arcan e Designite, in grado di effettuare la \textit{detection} degli smell \textit{Subclasses Do Not Redefine Methods}, \textit{Unutilizied Abstraction} e \textit{Unnecessary Abstraction}.
+
+Designite ha dimostrato una capacità maggiore di riconoscimento di istanze per gli smell \textit{SR} e \textit{UUA} ma poi ne ha individuato un numero minore per quanto riguarda lo smell \textit{UNA}. Non essendo presenti i valori di \textit{precision} per Designite, non è stato possibile fare un confronto approfondito riguardo questo aspetto degli algoritmi. In generale, è stata constatata sia la presenza di diversi falsi positivi di Arcan non segnalati da Designite sia istanze individuate da Designite che non sono risultate come smell.
+
+Riguardo \textit{Subclasses Do Not Redefine Methods}, Designite è in grado di discriminare i metodi ereditati in base al modificatore mentre Arcan li considera tutti, anche se ritengo un caso abbastanza isolato la presenza in una gerarchia di due metodi \textit{private} definiti da classi diverse che condividono lo stesso nome. Arcan inoltre non considera nella ricerca diversi falsi positivi relativi a \textit{exception}, riconosciuti invece da Designite. Per questi motivi introdotti, ritengo che nessun \textit{tool} prevalga sull'altro in considerazione alla qualità e capacità della \textit{detection}.
+    %Per questi motivi introdotti, ritengo che la \textit{detection} di Arcan per questo smell sia più accurata, anche a fronte di una \textit{precision} di 89.75 \%.
+
+In merito a \textit{Unutilizied Abstraction}, Designite non effettua alcuna distinzione tra la tipologia di classi analizzate e le relazioni che intercorrono tra esse, a differenza di quanto effettuato da Arcan. Questa situazione porta quindi a non considerare il caso delle \textit{orphan abstractions}, introdotto nella definizione dello smell come una delle due tipologie di manifestazione (sezione 4.2). Molte interfacce e classi astratte, che dovrebbero risultare come smell, non vengono erroneamente considerate da Designite.
+%Questo causa la detection anche di interfacce e classi astratte non implementate oppure estese, come richiede lo smell, ma soltanto utilizzate attraverso la definizione di attributi di quel tipo oppure l'utilizzo di metodi e costanti definite al loro interno.
+Inoltre la ricerca dei figli di classi inutilizzate introduce diverse istanze in più non prese in considerazione da Arcan. Il controllo di Arcan sembra quindi più completo, a fronte di un'analisi maggiormente approfondita su classi e relazioni e una fedeltà superiore alla definizione dello smell rispetto a Designite.
+    % La loro mi sembra sbagliata, la ns. ha una precision alta 95.43 \%
+
+Infine, relativamente a \textit{Unnecessary Abstraction} si può affermare che Arcan effettua un controllo più dettagliato e accurato, poiché vengono ricercati nel codice tutti e tre i casi di classi non necessarie presentati, sacrificando però la \textit{precision} (73.66\%) influenzata soprattutto dalle classi procedurali non considerate da Designite. Anche valutando solamente il caso \textit{constant placeholder}, Arcan esegue verifiche più approfondite riguardo le \textit{abstraction} sotto analisi.
+
+Concludendo, si può affermare che nonostante la ricerca di Designite sia in grado di trovare un maggior numero di istanze, Arcan effettua controlli più dettagliati sulle classi e interfacce sotto analisi. Non disponendo però dei dati di \textit{precision} di tutte e due i \textit{tool}, non può essere effettuato un confronto sulla differenza della reale efficacia dei due algoritmi.
+
+
+
+
+% Non sempre più vuol dire meglio, di designite non abbiamo i valori di precision
+
+% Designite ne trova di più
+% Designite considera alcuni FP di Arcan ma Arcan considera alcuni casi come FP di cui Designite non effettua la detection

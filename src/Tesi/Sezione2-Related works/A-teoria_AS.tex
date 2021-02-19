@@ -1,0 +1,28 @@
+\subsection{Bad smell e refactoring}
+La letteratura degli \textit{smell} contiene diversi lavori riguardanti la loro definizione, l'impatto che hanno sulla qualità del sistema e le tecniche per il loro riconoscimento. La maggioranza di questi lavori però riguarda la categoria dei \textit{code smell} \cite{fowler2018refactoring}, in quanto meno lavoro è stato svolto nell'ambito degli \textit{architectural smell} \cite{AzadiFontana}.
+
+%Introduzione code smell
+Martin Fowler et al. \cite{fowler2018refactoring} hanno per primi introdotto i concetti di \textit{code smell} e \textit{refactoring}, cioè problemi comuni all'interno del codice e le relative tecniche di rimozione. Gli autori hanno voluto creare una guida per effettuare il \textit{refactoring} in diverse situazioni, in modo da evitare l'introduzione di \textit{bug} e mantenere un'elevata qualità del codice.
+
+Diversi aspetti riguardanti le tecniche di \textit{refactoring} e le sue differenti applicazioni sono stati anche approfonditi M. Lippert et al. \cite{lippert2006refactoring}. I due autori trattano anche il tema degli \textit{architecture smell}, presentando un loro catalogo e diverse strategie per effettuare il \textit{refactoring} in maniera ottimale. Oltre al tema degli \textit{architecture smell}, vengono discusse anche tecniche applicate in altri ambiti come \textit{API}, \textit{database} e progetti complessi (\textit{Large Refactoring}).
+
+Il tema del \textit{refactoring} è trattato anche da M. Stal \cite{stal2014refactoring}, che affronta il tema della prevenzione dell'erosione architetturale attraverso l'applicazione di differenti tecniche per la rimozione di \textit{smell}.
+
+% definizione di AS
+La definizione del concetto di \textit{architecture smell} è stata effettuata da J. Garcia et al. \cite{Garcia2009}, stabilendo gli aspetti che caratterizzano questa tipologia di problemi architetturali e le differenze tra essi e gli anti-pattern architetturali. Il loro lavoro inoltre contiene una descrizione dettagliata di quattro diversi \textit{architectural smell}, contenenti anche esempi generici di diagrammi \textit{UML} al fine di favorire il lavoro dei progettisti e sviluppatori nella ricerca degli stessi.
+
+G. Suryanarayana et al. \cite{SURYANARAYANA201521} hanno proposto un catalogo di \textit{architecture smell} suddivisi in 4 categorie differenti in base al principio di progettazione \cite{booch2008object} violato dallo \textit{smell}: \textit{Abstraction}, \textit{Encapsulation}, \textit{Hierarchy} e \textit{Modularization}. Oltre alla definizione, ogni \textit{smell} presenta inoltre informazioni riguardanti strategie di \textit{refactoring} consigliate, impatto sulla qualità del codice, cause potenziali e diversi esempi.
+
+% Dipendenze tra gli smell
+F. Arcelli Fontana et al. \cite{arcelli2015codesmellrelations} hanno studiato le relazioni tra diverse tipologie di \textit{code smell} all'interno di 74 sistemi, al fine di valutare il loro impatto sul \textit{technical debt}. Gli autori hanno riscontrato una percentuale significante di casi di correlazione tra istanze di \textit{smell} differenti e ciò ha permesso di confermare che i \textit{code smell} tendono a presentarsi in gruppo, influenzando negativamente la manutenzione dei progetti e il debito tecnico in maniera superiore rispetto alla loro manifestazione singola.
+
+Una ricerca empirica riguardante l'influenza dei \textit{code smell} sul degrado architetturale di un sistema è stata svolta anche da I. Macia et al. \cite{macia2014codeanomalies}, attraverso lo studio di 40 versioni di 6 sistemi software e l'analisi di 2056 anomalie del codice. Questa ricerca ha evidenziato che il 78\% dei problemi architetturali presenti nei programmi possono essere ricondotti ad anomalie del codice e che le strategie di \textit{refactoring} non sempre contribuiscono in maniera significativa alla rimozione di problemi collegati all'architettura.
+
+Le possibili correlazioni e dipendenze tra \textit{code smell} e \textit{architectural smell} sono stati approfondite da F. Arcelli et al. \cite{arcelli2019dependency}. Attraverso l'analisi delle correlazioni tra 19 \textit{code smell} e 4 \textit{architectural smell}, gli autori sono stati in grado di dimostrare che le due categorie considerate possono considerarsi tra loro indipendenti e che quindi è necessario prestare attenzione al \textit{refactoring} di tutte le categorie di \textit{smell}.
+
+M. Tufano et al. \cite{tufano2015whenwhy} hanno effettuato una ricerca riguardante il momento e le motivazioni dell'introduzione di \textit{code smell} nel progetto, attraverso l'analisi di diverse \textit{commit} effettuate su 200 progetti \textit{open source} provenienti da differenti ecosistemi. La ricerca effettuata ha permesso agli autori la definizione di quattro differenti situazioni comuni riguardanti l'introduzione degli smell, con relativi consigli e rimedi per evitare questi scenari.
+
+
+Duc Minh Le et al. \cite{mihn2018architecturaldecay} sono stati in grado di analizzare l'impatto degli \textit{architectural smell} sul sistema, attraverso lo studio delle relazioni tra gli \textit{smell} trovati e i problemi indicati dagli \textit{issue trackers} di diversi progetti. Lo studio ha dimostrato il forte impatto che la loro presenza ha sul decadimento del software, poiché rende necessaria una quantità di risorse considerevole per garantire il mantenimento del software durante il suo ciclo di vita. 
+Inoltre i \textit{file} nel progetto coinvolti negli \textit{smell} risultano maggiormente inclini agli errori e alle continue modifiche rispetto a quelli che non presentano problemi.
+

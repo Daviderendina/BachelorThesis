@@ -1,0 +1,47 @@
+\textbf{Algoritmo}
+\begin{algorithmic}
+\Function{dfs-unnecessary}{G}
+    \For{vertice v in G.V}
+        \If{not v.visited}
+            \State{\Call{dfs-visit-unnecessary}{G, v}}
+        \EndIf
+    \EndFor
+\EndFunction
+\\
+\Function{dfs-visit-unnecessary}{G, v}
+    \State{v.visited = true}
+    \State{smellPresent = \Call{check-unnecessary-smell}{v}}
+    \If{smellPresent}
+        \State{smellClasses.add(v)}
+    \EndIf
+    \For{u in Adj(v)}
+        \If{not u.visited}
+            \State{\Call{dfs-visit-unnecessary}{G, u}}
+        \EndIf
+    \EndFor
+\EndFunction
+\\
+\Function{Check-unnecessary-procedural-thinking}{v}
+    \State{return (v.attributes.length = 0) and (v.methods.length $\leq$ 2) and (v is Class))}
+\EndFunction
+\\
+\Function{check-unnecessary-constant-unit}{v}
+    \If{(v.methods.length == 0) and (v.attributes.length $\geq$ 1)}
+        \If{v is an Interface}
+            \State{return True}
+        \Else
+            \For{attribute in v.attributes}
+                \If{not (attribute is final)}
+                    \State{return False}
+                \EndIf
+            \EndFor
+            \State{return True}
+        \EndIf
+    \EndIf
+    \State{return False}
+\EndFunction
+\\
+\Function{check-unecessary-over-engineered}{}
+\end{algorithmic}
+
+%----

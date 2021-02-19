@@ -1,0 +1,105 @@
+\subsubsection{Unnecessary Abstraction}
+    Le attività e i risultati della validazione di \textit{Unnecessary Abstraction} verranno presentati sia considerando lo \textit{smell} dal punto di vista generico che analizzando i tre casi distinti dello stesso. I valori di \textit{precision} calcolati per le tre differenti categorie possono essere osservati nella tabella 8.
+    %In questo senso, la tabella 8 mostra nel dettaglio i valori di \textit{precision} per le tre casistiche considerate. 
+    
+    La validazione di questo \textit{smell} ha presentato diversi problemi, a causa di numerosi casi particolari e difficoltà nell'ideazione di strategie e sviluppo di algoritmi, testimoniate dal valore di \textit{precision} di 73.66\%, il minore tra i tre calcolati. Come mostrato dalla tabella 8, la precisione dell'algoritmo è fortemente influenzata dal caso \textit{procedural class}, che presenta un alto numero di istanze analizzate e una precisione del 65.33\%. La precisione dei casi \textit{constant placeholder} e \textit{over engineered} invece assume i valori rispettivamente del 86.75\% e 87.50\%.   
+
+    
+    %Come ho fatto la validation?
+    Le tre casistiche dello \textit{smell} hanno richiesto differenti attività per la validazione dei risultati.
+    Per i casi \textit{constant placeholder} e \textit{over engineered}, sono state analizzate le classi per verificare che seguissero i vincoli descritti nel capitolo precedente. Per le \textit{procedural class} invece il controllo riguardava non solo il rispetto o meno dei vincoli, ma anche le motivazioni dello sviluppo della classe per comprendere se la stessa potesse essere considerata come \textit{smell} o meno. Per fare questo, sono stati analizzati gli attributi utilizzati dalle diverse funzioni: venivano giudicate \textit{procedural class} tutte quelle che svolgevano una banale trasformazione dei dati in ingresso e producevano in uscita un risultato, mentre classi che effettuavano trasformazioni al sistema oppure ad altri oggetti in modo permanente non venivano considerate tali. Un ulteriore verifica comprende l'eventuale struttura nella quale era inserita, i package e le interfacce implementate, i commenti alla classe e alle funzioni e i nomi delle funzioni stesse. 
+
+    
+    %Modifiche alla validation
+    Anche questa \textit{detection}, come già effettuato per \textit{Subclasses Do Not Redefine Methods}, ha subito un adattamento al termine della prima fase di validazione. Prima delle modifiche agli algoritmi, la \textit{precision} calcolata su questo algoritmo era 59.66\%, con 278 veri positivi su 466 totali. Si è verificato quindi un incremento di circa 14 punti percentuale, portandolo all'attuale valore di 73.66\%. 
+    Il numero di istanze segnalate da Arcan è inoltre calato di 722 unità, con la rimozione di 134 istanze selezionate precedentemente per la prima \textit{validation}, tra le quali si registrano 8 veri positivi e 126 falsi positivi (94\% dei casi validati e rimossi). 
+    
+    Nelle tre casistiche introdotte per lo \textit{smell}, sono state effettuate le modifiche elencate di seguito:
+    \begin{itemize}
+        \item Per la ricerca delle \textit{constant placeholder} non sono state più considerate le classi che possiedono un supertipo. Questa modifica ha comportato un incremento della \textit{precision} da 78.57\% a 86.75\%, con un passaggio da 136 VP su 168 totali a 144 VP su 166 attuale.
+            %\textit{Constant placeholder} ha visto l'esclusione delle classi che presentano supertipi dalla detection, con un aumento della \textit{precision} da 78.57\% a 86.75\% e con un passaggio da 136 VP su 168 totali a 144VP su 166.
+         
+        \item L'introduzione di limiti più stringenti per la \textit{detection} di \textit{over engineered} ha fatto registrare un aumento della precision da 27.59\% a 87.50\%. La differenza molto grande in termini di punti percentuale è dovuta al numero esiguo di istanze trovate, con un numero di casi considerati prima e dopo le modifiche effettuate rispettivamente di 29 e 8. I cambiamenti introdotti riguardano il controllo del nome delle funzioni, che viene fatto per intero e non solamente controllando che il nome inizi con le stringhe \textit{"get"} oppure \textit{"set"}. Viene verificato inoltre che le classi sospette non ereditino nulla da eventuali supertipi. 
+            % In una situazione over engineered anche se il supertipo fosse vuoto si considera (e non si eliminano come gli altri casi) poichè potrebbe essere tutto over engineered, anche la generalizzazione
+            %\textit{Over engineered} invece ha visto aumentare la metrica \textit{precision} da 27.59\% a 87.50\%, grazie all'introduzione di limiti più stringenti per quanto riguarda il controllo dei nomi delle funzioni (si è passato da controllare solamente se il nome delle funzioni iniziasse con 'get' oppure 'set' al controllo che effettivamente la funzione presentasse un nome del tipo getNomeAttributo oppure setNomeAttributo) oppure al non considerare classi che ereditavano metodi o attributi dai loro supertipi. L'aumento di così tanti punti percentuale è dovuto soprattutto al fatto che le classi considerate sono molte poche, 29 nella prima validation e solamente 8 nella seconda.
+        
+        
+        \item La rimozione delle classi che presentavano supertipi nella ricerca delle \textit{procedural class} ha comportato un aumento della metrica \textit{precision} da 51.30\% a 65.33\%, passando da 138 VP su 269 istanze a 179 VP su 274. 
+            %Il valore di \textit{precision} molto più basso rispetto a tutti gli altri riscontrati è indice del fatto che, come già anticipato in precedenza, è stato in assoluto il caso più critico di cui fare la \textit{detection} e \textit{validation}.
+    \end{itemize}
+    %
+    \defaultvpsace
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \textbf{Caso} & \textbf{Analizzati} & \textbf{VP} & \textbf{FP} & \textbf{Precision} \\
+            \hline
+            Constant Placeholder & 166 & 144 & 22 & 86.75\%\\
+            Over-engineered & 8 & 7 & 1 & 87.50\%\\
+            Procedural classes & 284 & 179 & 95 & 65.33\% \\
+            \hline
+        \end{tabular}
+        \caption{Dettaglio casistica Unnecessary Abstraction}
+        \label{tab:caption} 
+    \end{table}
+    
+    \paragraph{Analisi di falsi positivi}
+        Le cause della presenza di numerose istanze risultate come falsi positivi può essere ricercata in tre fattori fondamentali: 
+        \begin{enumerate}
+            %\item Tra i tre \textit{smell} introdotti, è quello con la definizione meno specifica, senza una definizione precisa di una particolare situazione e con diverse casistiche presenti. Di conseguenza, le regole di detection si sono rilevate molto più difficili da implementare.
+            
+            \item A differenza degli altri due \textit{smell}, \textit{UNA} presenta un gran numero di casi particolari e situazioni limite, emerse soprattutto durante le fasi di validazione. Di conseguenza le regole di detection sono risultate molto più difficili da implementare, soprattutto nell'ottica di inserire limiti stringenti per le varie casistiche.
+            
+            %\item Le regole di detection si sono rivelate molto più leggere rispetto agli altri due casi, con conseguenza un numero significativo di classi trovate che rientravano nelle caratteristiche ma non erano affette dallo \textit{smell}. 
+            
+            \item Le difficoltà riscontrate nella detection del caso \textit{procedural class} hanno un impatto considerevole sul valore di \textit{precision} calcolato per l'algoritmo di detection, in quanto è il caso più rappresentato dei tre con 62\% delle istanze validate di \textit{Unnecessary Abstraction} e presenta il valore di \textit{precision} minore (65.33\%).
+        \end{enumerate}
+        %
+        Al fine di approfondire le cause della presenza di falsi positivi nel dettaglio, saranno ora analizzati i risultati della validazione delle diverse tipologie singolarmente.
+            % 3. Verranno ora analizzati i risultati della validazione delle tipologie di \textit{Unnecessary Abstraction} individualmente, al fine di approfondire le cause nel dettaglio.
+            % 1. Dopo aver analizzato i problemi principali che hanno portato a questa situazione, si approfondiscono i casi nel dettaglio. 
+            % 2. Innanzitutto, penso sia fondamentale scindere le tre casistiche per discuterle separatamente, in quanto molto differenti tra loro.
+            %\begin{itemize}
+        
+        La causa più comune della presenza di falsi positivi \textit{constant placeholder} è rappresentata da classi che presentano pochi attributi, generalmente da 1 a 3, non considerate come placeholder in quanto contenenti campi di significati e tipologie differenti o diverse istanze di classi anonime. Spesso le classi presentano solamente un solo attributo come unica istanza di un oggetto, una situazione simile al design pattern \textit{Singleton} \cite{gamma1994design}. 
+            %un solo attributo costante, spesso rappresentante un unica istanza dell'oggetto della classe (simile al pattern \textit{Singleton}), o \textit{abstraction} che presentano pochi attributi (1-3) ma non sono state considerate \textit{placeholder} dal momento che contengono campi di tipi diversi e spesso istanze di classi anonime.
+            %sicuramente il caso più critico è quello di classi che presentano solo un attributo, spesso rappresentante un istanza unica dell'oggetto della classe. Un altra situazione comune sono classi che definiscono pochi attributi, in genere da 1 a 3, ma non rappresentano un placeholder per costanti, poichè gli attributi presenti presentano tipi diversi e scopi differenti e non sono propriamente valori ma per di più oggetti di classi anonime.
+            % Altre situazioni che hanno portato alla presenza di falsi positivi sono la presenza nella classe di pochi attributi (1-3) ma non rappresentano un vero e proprio placeholder per costanti, perchè presentano anche tipi diversi e scopi ben differenti. 
+        Una possibile soluzione per la loro rimozione potrebbe essere l'introduzione di una soglia minima di attributi per essere considerata un \textit{placeholder}, che porterebbe però a una possibile limitazione dell'algoritmo siccome potrebbero rimanere escluse dall'algoritmo diverse classe considerate ad oggi come vere positive.% verrebbero tutte le istanze con pochi attributi considerate però vere positive.
+            % problemi vecchi - con queste regole di detection, la ricerca delle costant placeholder porta anche diversi falsi positivi. Un caso molto frequente è quello di classi che hanno solamente un parametro costante che rappresenta un ID statico e un costruttore che richiama quello del suo supertipo; siccome del costruttore delle classi non viene fatto il parsing, questa risulta come una classe senza metodi e con solo attributi costanti. Una soluzione a questo problema potrebbe essere il parsing del costruttore, ma questo porterebbe sicuramente molti VP a non essere più considerati tale, poichè ho riscontrato la presenza di numerose classi costant-placeholder con il costruttore privato e vuoto. Un'altra soluzione potrebbe quindi consistere nell'inserimento di un controllo che la classe non sia un sottotipo.
+            
+        L'esiguo numero di istanze \textit{over engineered} dello \textit{smell} e di falsi positivi riscontrati (rispettivamente 8 e 1) non rendono possibile alcuna analisi su di essi. L'unico falso positivo è relativo a una classe che presenta tutte le caratteristiche che le fanno considerare \textit{over engineered} ma contiene un'altra classe al suo interno. Questo causa anche che il nodo della dipendenza in ingresso alla classe sia in realtà dato dalla sua classe interna (nel grafo ogni classe interna ha un arco \textit{dependsOn} verso la unit che la contiene), rendendola così un falso positivo. 
+            % problemi vecchi - la detection di questa parte degli smell è inadeguata, infatti si è pensato di rimuoverla. Anche qui si potrebbero controllare eventuali classi padre (che eliminerebbero lo smell) e inoltre bisognerebbe mettere un controllo più stringente sui metodi, ovvero dovrebbero avere esattamente il nome getAttributo e setAttributo; in pratica, si andrebbe solamente a cercare quel caso nello specifico.
+            
+        Infine le \textit{procedural class} presentano caratteristiche molto comuni anche per classi non procedurali, causando così la \textit{detection} di numerose istanze considerate poi come falsi positivi. Anche se le classi presentano tutte le caratteristiche necessarie per essere considerate procedurali, può succedere che molto spesso non siano comunque ritenute tali poiché sono presenti diversi fattori esterni alla sola struttura della classe difficoltosi da analizzare attraverso un algoritmo di analisi su un grafo.
+        Durante la valutazione delle istanze di questo algoritmo vengono infatti presi in considerazione aspetti quali nomi assegnati agli elementi, codice ed eventuali commenti presenti, che influiscono in maniera significativa sulla valutazione della classe come procedurale o meno. %, difficili da analizzare attraverso un algoritmo.
+        %L'analisi delle intenzioni del programmatore durante la generazione della classe infatti, senza poter valutare elementi come codice, nomi di classi e funzioni ed eventuali commenti, può risultare molto complicata attraverso un algoritmo. 
+        Inoltre in un progetto la presenza di alcune classi procedurali è comune, come ad esempio le classi che rappresentano \textit{Thread} oppure quelle che che implementano il metodo \textit{main}, ma queste vengono individuate erroneamente da Arcan come \textit{smell}, generando casi di falsa positività.
+            % Ad esempio è difficoltoso capire le intenzioni del programmatore che l'hanno portato a generare quella classe in quel particolare modo, se non analizzandone il codice, i nomi dati alla classe e alle diverse funzioni ed eventuali commenti lasciate dagli sviluppatori.\\
+            % Questo caso presenta il più basso valore di precision tra tutti; questo è causa del fatto che è in assoluto il più difficile di cui fare la detection (come gia spiegato prima)(anche se 'rientra' nei vincoli, ci sono fattori esterni alla struttura del programma e soggettivi che è difficoltoso esprimere con un algoritmo - come faccio a capire se la classe è intesa come porcedurale o no solamente analizzando un grafo? è molto complesso.) 
+            % problemi vecchi - un problema principale per la detection di queste classi è quello che sono molto comuni. Un esempio di FP ricorrente sono le Factory, spesso riconosciute come Procedural class ma in realtà hanno uno scopo ben preciso; si potrebbe filtrare il nome delle classi, sulla falsariga di quanto fatto per le Exception in SR (?), per risolvere questo problema.Anche qui inoltre si potrebbe abbassare il numero dei FP controllando le classi che utilizzino la loro classe padre ed escluderle così dalla lista degli smell, caso che si è verificato molto spesso.
+         \defaultvpsace
+        \begin{table}[h]
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{Progetto} & \textbf{Analizzati} & \textbf{Veri positivi} & \textbf{Falsi positivi} \\
+            \hline
+            Accumulo & 50 & 37 & 13 \\
+            Beam & 17 & 11 & 6 \\
+            Bookkeeper & 50 & 38 & 12 \\
+            Cassandra & 50 & 26 & 24 \\
+            Druid & 50 & 41 & 9 \\
+            Flink & 47 & 38 & 9 \\
+            Geode & 50 & 35 & 15 \\
+            Kafka & 50 & 43 & 7 \\
+            Skywalking & 50 & 40 & 10 \\
+            Zookeeper & 38 & 21 & 17 \\
+            \hline
+            Totale & 452 & 330 & 122 \\
+            \hline
+        \end{tabular}
+        \caption{Risultati validazione Unnecessary Abstraction}
+        \label{tab:caption} 
+        \end{table}
